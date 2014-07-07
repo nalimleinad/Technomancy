@@ -164,11 +164,11 @@ public class ClientProxy extends CommonProxy implements IGuiHandler{
 		if(world instanceof WorldClient) {
 			switch(ID) {
 				case 0: 
-					return new GuiProcessorTC(player.inventory, ((TileTCProcessor)world.getBlockTileEntity(x, y, z)));
+					return new GuiProcessorTC(player.inventory, ((TileTCProcessor)world.getTileEntity(x, y, z)));
 				case 1:
-					return new GuiProcessorBM(player.inventory, ((TileBMProcessor)world.getBlockTileEntity(x, y, z)));
+					return new GuiProcessorBM(player.inventory, ((TileBMProcessor)world.getTileEntity(x, y, z)));
 				case 2:
-					return new GuiProcessorBO(player.inventory, ((TileBOProcessor)world.getBlockTileEntity(x, y, z)));
+					return new GuiProcessorBO(player.inventory, ((TileBOProcessor)world.getTileEntity(x, y, z)));
 			}
 		}
 		return null;

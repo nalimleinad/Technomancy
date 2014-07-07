@@ -13,7 +13,7 @@ public class TileNodeDynamoRenderer extends TileEntitySpecialRenderer {
 	
 	ModelNodeDynamo model = new ModelNodeDynamo();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_NODE_DYNAMO_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_NODE_DYNAMO_TEXTURE);
 
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double x, double y, double z, float t) {

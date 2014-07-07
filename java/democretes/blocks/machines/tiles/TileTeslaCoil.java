@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectSource;
@@ -67,7 +67,7 @@ public class TileTeslaCoil extends TileTechnomancy implements IAspectSource, IEs
 		if(!this.sources.isEmpty()) {
 			for(int i = 0; i < sources.size(); i++) {
 				ChunkCoordinates chords = sources.get(i);
-				TileEntity tile = this.worldObj.getBlockTileEntity(chords.posX, chords.posY, chords.posZ);
+				TileEntity tile = this.worldObj.getTileEntity(chords.posX, chords.posY, chords.posZ);
 				if(tile != null) {
 					IAspectSource source = (IAspectSource)tile;
 					AspectList al = source.getAspects();				
@@ -107,7 +107,7 @@ public class TileTeslaCoil extends TileTechnomancy implements IAspectSource, IEs
 			if(te instanceof TileTeslaCoil) {
 				return;
 			}
-			int opposite = ForgeDirection.OPPOSITES[this.facing];
+			int opposite = ForgeDirection.OPPOSITES[facing];
 			IEssentiaTransport ic = (IEssentiaTransport)te;
 			if (!ic.canOutputTo(ForgeDirection.getOrientation(opposite))) {
 				return;
@@ -118,7 +118,7 @@ public class TileTeslaCoil extends TileTechnomancy implements IAspectSource, IEs
 				ta = ic.getEssentiaType(ForgeDirection.getOrientation(opposite));
 			}
 			if ((ta != null) && (ic.getSuctionAmount(ForgeDirection.getOrientation(opposite)) < getSuctionAmount(ForgeDirection.getOrientation(opposite)))) {
-				addToContainer(ta, ic.takeVis(ta, 1));
+				addToContainer(ta, ic.takeEssentia(ta, 1, ForgeDirection.getOrientation(opposite)));
 			}
 		}
 	}
@@ -185,7 +185,7 @@ public class TileTeslaCoil extends TileTechnomancy implements IAspectSource, IEs
 	public void setSuction(Aspect aspect, int amount) {	}
 
 	@Override
-	public int takeVis(Aspect aspect, int amount) {
+	public int takeEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		  return takeFromContainer(aspect, amount) ? amount : 0;
 	}
 
@@ -218,7 +218,7 @@ public class TileTeslaCoil extends TileTechnomancy implements IAspectSource, IEs
 	}
 
 	@Override
-	public int addVis(Aspect aspect, int amount) {
+	public int addEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		return amount - addToContainer(aspect, amount);
 	}
 

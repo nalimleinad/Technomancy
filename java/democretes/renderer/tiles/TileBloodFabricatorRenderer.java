@@ -1,12 +1,13 @@
 package democretes.renderer.tiles;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
@@ -22,7 +23,7 @@ public class TileBloodFabricatorRenderer extends TileEntitySpecialRenderer {
 	
 	ModelBloodFabricator model = new ModelBloodFabricator();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_BLOOD_FABRICATOR_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_BLOOD_FABRICATOR_TEXTURE);
 
 	@Override
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float t) {
@@ -42,7 +43,7 @@ public class TileBloodFabricatorRenderer extends TileEntitySpecialRenderer {
 	}
 	
 	public void renderLiquid(TileEntity entity, double x, double y, double z, float f)  {
-	    if (this.tileEntityRenderer.renderEngine == null) {
+	    if (Minecraft.getMinecraft().renderEngine == null) {
 	      return;
 	    }	    
 	    TileBloodFabricator fabricator = (TileBloodFabricator)entity;
@@ -67,18 +68,18 @@ public class TileBloodFabricatorRenderer extends TileEntitySpecialRenderer {
 	    
 	    t.startDrawingQuads();
 	    
-	    Icon icon = BloodMagic.lifeEssenceFluid.getIcon();
+	    IIcon IIcon = BloodMagic.lifeEssenceFluid.getIcon();
 	    
-	    this.tileEntityRenderer.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+	    Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 	    
 	    Block tank = TMBlocks.bloodFabricator;
 
-	    renderBlocks.renderFaceYNeg(tank, -0.5D, 0.0D, -0.5D, icon);
-	    renderBlocks.renderFaceYPos(tank, -0.5D, 0.0D, -0.5D, icon);
-	    renderBlocks.renderFaceZNeg(tank, -0.5D, 0.0D, -0.5D, icon);
-	    renderBlocks.renderFaceZPos(tank, -0.5D, 0.0D, -0.5D, icon);
-	    renderBlocks.renderFaceXNeg(tank, -0.5D, 0.0D, -0.5D, icon);
-	    renderBlocks.renderFaceXPos(tank, -0.5D, 0.0D, -0.5D, icon);
+	    renderBlocks.renderFaceYNeg(tank, -0.5D, 0.0D, -0.5D, IIcon);
+	    renderBlocks.renderFaceYPos(tank, -0.5D, 0.0D, -0.5D, IIcon);
+	    renderBlocks.renderFaceZNeg(tank, -0.5D, 0.0D, -0.5D, IIcon);
+	    renderBlocks.renderFaceZPos(tank, -0.5D, 0.0D, -0.5D, IIcon);
+	    renderBlocks.renderFaceXNeg(tank, -0.5D, 0.0D, -0.5D, IIcon);
+	    renderBlocks.renderFaceXPos(tank, -0.5D, 0.0D, -0.5D, IIcon);
 	    
 	    t.draw();	    
 	    

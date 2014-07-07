@@ -30,17 +30,17 @@ public class TMItems {
 
         // Item Initializations
         //essentiaCannon = new ItemEssentiaCannon(ItemIds.idESSENTIA_CANNON);
-        itemMaterial = new ItemMaterial(Ids.itemMaterial);
-        itemPen = new ItemPen(Ids.pen);
-        itemWandCores = new ItemWandCores(Ids.wandCores);
-        itemFusionFocus = new ItemFusionFocus(Ids.focusFusion);        
-        processedIron = new ItemProcessedOre.ItemProcessedIron(Ids.procIron);
-        processedGold = new ItemProcessedOre.ItemProcessedGold(Ids.procGold);
-        processedCopper = new ItemProcessedOre.ItemProcessedCopper(Ids.procCopp);
-        processedTin = new ItemProcessedOre.ItemProcessedTin(Ids.procTin);
-        processedSilver = new ItemProcessedOre.ItemProcessedSilver(Ids.procSilver);
-        processedLead = new ItemProcessedOre.ItemProcessedLead(Ids.procLead);
-        processedNickel = new ItemProcessedOre.ItemProcessedNickel(Ids.procNickel);
+        itemMaterial = new ItemMaterial();
+        itemPen = new ItemPen();
+        itemWandCores = new ItemWandCores();
+        itemFusionFocus = new ItemFusionFocus();        
+        processedIron = new ItemProcessedOre.ItemProcessedIron();
+        processedGold = new ItemProcessedOre.ItemProcessedGold();
+        processedCopper = new ItemProcessedOre.ItemProcessedCopper();
+        processedTin = new ItemProcessedOre.ItemProcessedTin();
+        processedSilver = new ItemProcessedOre.ItemProcessedSilver();
+        processedLead = new ItemProcessedOre.ItemProcessedLead();
+        processedNickel = new ItemProcessedOre.ItemProcessedNickel();
         
         //Registry
         //GameRegistry.registerItem(essentiaCannon, LibNames.ESSENTIA_CANNON_NAME);
@@ -60,7 +60,7 @@ public class TMItems {
     public static void initBloodMagic() {
 
     	//Initializations
-        itemBM = new ItemBMMaterial(Ids.matBM);        
+        itemBM = new ItemBMMaterial();        
         
         //Registry
         GameRegistry.registerItem(itemBM, Names.itemBM);
@@ -71,7 +71,7 @@ public class TMItems {
     
     public static void initBotania() {
     	//Initializations
-    	itemBO = new ItemBOMaterial(Ids.matBO);
+    	itemBO = new ItemBOMaterial();
     	
     	//Registry
     	GameRegistry.registerItem(itemBO, Names.itemBO);

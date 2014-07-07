@@ -15,7 +15,7 @@ public class TileFlowerDynamoRenderer extends TileEntitySpecialRenderer{
 	
 	ModelFlowerDynamo model = new ModelFlowerDynamo();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_FLOWER_DYANMO_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_FLOWER_DYANMO_TEXTURE);
 
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float f) {
 		GL11.glPushMatrix();
@@ -33,7 +33,7 @@ public class TileFlowerDynamoRenderer extends TileEntitySpecialRenderer{
 	}
 	
 	public void renderFacing(TileEntity entity) {
-		switch (((TileDynamoBase)entity).getFacing()){
+		switch (((TileDynamoBase)entity).facing){
 		case 0:
 			GL11.glRotatef(180, 1.0F, 0.0F, 0.0F);break;
 		case 1:

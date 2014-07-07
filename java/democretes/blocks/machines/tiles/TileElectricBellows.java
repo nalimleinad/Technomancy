@@ -1,13 +1,11 @@
 package democretes.blocks.machines.tiles;
 
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.api.aspects.AspectList;
 import cofh.api.energy.EnergyStorage;
 import democretes.compat.Thaumcraft;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
-import thaumcraft.api.aspects.AspectList;
 
 
 public class TileElectricBellows extends TileMachineBase {
@@ -36,11 +34,11 @@ public class TileElectricBellows extends TileMachineBase {
 	public void updateEntity() {
 		try{
 			ForgeDirection dir = ForgeDirection.getOrientation(facing);
-			Object furnace = worldObj.getBlockTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
+			Object furnace = worldObj.getTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ);
 			if(Thaumcraft.TileAlchemyFurnace.isInstance(furnace)) {
-				furnace = Thaumcraft.TileAlchemyFurnace.cast(worldObj.getBlockTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ));
-			}else if(Thaumcraft.TileArcaneFurnace.isInstance(worldObj.getBlockTileEntity(xCoord + (dir.offsetX *2), yCoord, zCoord + (dir.offsetZ *2)))) {
-				furnace = Thaumcraft.TileArcaneFurnace.cast(worldObj.getBlockTileEntity(xCoord + (dir.offsetX *2), yCoord, zCoord + (dir.offsetZ *2)));
+				furnace = Thaumcraft.TileAlchemyFurnace.cast(worldObj.getTileEntity(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ));
+			}else if(Thaumcraft.TileArcaneFurnace.isInstance(worldObj.getTileEntity(xCoord + (dir.offsetX *2), yCoord, zCoord + (dir.offsetZ *2)))) {
+				furnace = Thaumcraft.TileArcaneFurnace.cast(worldObj.getTileEntity(xCoord + (dir.offsetX *2), yCoord, zCoord + (dir.offsetZ *2)));
 			}			
 			if(furnace != null) {
 				if(Thaumcraft.TileAlchemyFurnace.isInstance(furnace)) {

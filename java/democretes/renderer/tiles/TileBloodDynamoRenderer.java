@@ -16,7 +16,7 @@ public class TileBloodDynamoRenderer extends TileEntitySpecialRenderer {
 	
 	ModelBloodDynamo model = new ModelBloodDynamo();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_BLOOD_DYNAMO_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(), Ref.MODEL_BLOOD_DYNAMO_TEXTURE);
 
 	@Override
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float t) {
@@ -36,7 +36,7 @@ public class TileBloodDynamoRenderer extends TileEntitySpecialRenderer {
 	}
 	
 	public void renderFacing(TileEntity entity) {
-		switch (((TileDynamoBase)entity).getFacing()){
+		switch (((TileDynamoBase)entity).facing){
 		case 0:
 			GL11.glTranslatef(0.0F, -2.0F, 0.0F);
 			GL11.glRotatef(180, 0.0F, 1.0F, 0.0F); break;

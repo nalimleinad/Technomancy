@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -17,10 +17,10 @@ import thaumcraft.api.nodes.NodeModifier;
 import thaumcraft.api.nodes.NodeType;
 import thaumcraft.api.wands.IWandable;
 import cofh.api.energy.EnergyStorage;
-import cofh.util.MathHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import democretes.compat.Thaumcraft;
+import democretes.util.MathHelper;
 
 public class TileNodeGenerator extends TileMachineBase implements IEssentiaTransport, IAspectContainer, IWandable{
 
@@ -56,13 +56,13 @@ public class TileNodeGenerator extends TileMachineBase implements IEssentiaTrans
 				case 5:
 					xx += 6;
 				}
-				if(worldObj.getBlockTileEntity(xx, this.yCoord, zz) instanceof TileNodeGenerator) {
+				if(worldObj.getTileEntity(xx, this.yCoord, zz) instanceof TileNodeGenerator) {
 					this.active = true;
 				}
 			}
 			if(this.active == true) {
 				this.rotation += 1;
-				this.worldObj.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
+				worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 				switch(this.facing) {
 				case 2:
 					zz -= 3;break;
@@ -73,7 +73,7 @@ public class TileNodeGenerator extends TileMachineBase implements IEssentiaTrans
 				case 5:
 					xx += 3;break;
 				}
-				TileEntity entity = worldObj.getBlockTileEntity(xx, this.yCoord + 1, zz);
+				TileEntity entity = worldObj.getTileEntity(xx, this.yCoord + 1, zz);
 				if(entity == null || worldObj.isAirBlock(xx, this.yCoord, zz)) {
 					this.canSpawn = true;
 					this.addNode = false;
@@ -86,7 +86,7 @@ public class TileNodeGenerator extends TileMachineBase implements IEssentiaTrans
 						this.energyStorage.extractEnergy(1000, false);
 						node.addToContainer(this.aspect, 1);
 						this.takeFromContainer(this.aspect, 1);
-						worldObj.markBlockForRenderUpdate(xx, this.yCoord + 1, zz);
+						worldObj.markBlockForUpdate(xx, this.yCoord + 1, zz);
 					}
 					this.canSpawn = false;
 				}							
@@ -170,7 +170,7 @@ public class TileNodeGenerator extends TileMachineBase implements IEssentiaTrans
 						ic = (IEssentiaTransport)te;
 						Aspect ta = ic.getEssentiaType(dir.getOpposite());
 						if ((ic.getEssentiaAmount(dir.getOpposite()) > 0) && (ic.getSuctionAmount(dir.getOpposite()) < getSuctionAmount(null)) && (getSuctionAmount(null) >= ic.getMinimumSuction())) {
-							addToContainer(ta, ic.takeVis(ta, 1));
+							addToContainer(ta, ic.takeEssentia(ta, 1, dir.getOpposite()));
 							return;
 						}
 					}
@@ -224,12 +224,12 @@ public class TileNodeGenerator extends TileMachineBase implements IEssentiaTrans
 			case 5:
 				xx += 6;
 			}
-			TileEntity tile = worldObj.getBlockTileEntity(xx, this.yCoord, zz);
+			TileEntity tile = worldObj.getTileEntity(xx, this.yCoord, zz);
 			if(tile == null) {
 				return 0;
 			}
-			if((this.amount + ((TileNodeGenerator)tile).amount > 64)) {				
-				this.energyCalc =  MathHelper.round((Math.pow(((this.amount + ((TileNodeGenerator)tile).amount))/2, 2))*762.939453125);
+			if((amount + ((TileNodeGenerator)tile).amount > 64)) {				
+				energyCalc = MathHelper.round((Math.pow(((this.amount + ((TileNodeGenerator)tile).amount))/2, 2))*762.939453125);
 				if(this.getEnergyStored() >= this.energyCalc) {
 					if(this.aspect == Aspect.AURA) {					
 						generateNode(this.amount, ((TileNodeGenerator)tile).amount);
@@ -253,20 +253,20 @@ public class TileNodeGenerator extends TileMachineBase implements IEssentiaTrans
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getRenderBoundingBox() {
 		if (this.facing == 1 || this.facing == 3) {
-			return AxisAlignedBB.getAABBPool().getAABB(this.xCoord - 1.0F, this.yCoord, this.zCoord, this.xCoord + 2.0F, this.yCoord + 3.0F, this.zCoord + 1.0F);
+			return AxisAlignedBB.getBoundingBox(xCoord - 1.0F, yCoord, zCoord, xCoord + 2.0F, yCoord + 3.0F, zCoord + 1.0F);
 		}else{
-			return AxisAlignedBB.getAABBPool().getAABB(this.xCoord, this.yCoord, this.zCoord - 1.0F, this.xCoord + 1.0F, this.yCoord + 3.0F, this.zCoord + 2.0F);
+			return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord - 1.0F, xCoord + 1.0F, yCoord + 3.0F, zCoord + 2.0F);
 		}
 	}
 
 
 	@Override
 	public void readCustomNBT(NBTTagCompound compound)  {
-		this.aspect = Aspect.getAspect(compound.getString("Aspect"));
-		this.amount = compound.getShort("Amount");
-		this.active = compound.getBoolean("Active");
-		this.canSpawn = compound.getBoolean("Spawn");
-		this.facing = compound.getByte("Facing");
+		aspect = Aspect.getAspect(compound.getString("Aspect"));
+		amount = compound.getShort("Amount");
+		active = compound.getBoolean("Active");
+		canSpawn = compound.getBoolean("Spawn");
+		facing = compound.getByte("Facing");
 
 	}
 
@@ -356,7 +356,7 @@ public class TileNodeGenerator extends TileMachineBase implements IEssentiaTrans
 	public void setSuction(Aspect aspect, int amount) {	}
 
 	@Override
-	public int takeVis(Aspect aspect, int amount) {
+	public int takeEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		return takeFromContainer(aspect, amount) ? amount : 0;
 	}
 
@@ -400,7 +400,7 @@ public class TileNodeGenerator extends TileMachineBase implements IEssentiaTrans
 	}
 
 	@Override
-	public int addVis(Aspect aspect, int amount) {
+	public int addEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		return amount - addToContainer(aspect, amount);
 	}
 

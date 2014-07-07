@@ -1,12 +1,13 @@
 package democretes.renderer.tiles;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
@@ -22,7 +23,7 @@ public class TileEssentiaContainerRenderer extends TileEntitySpecialRenderer{
 
 	ModelEssentiaContainer model = new ModelEssentiaContainer();
 
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_ESSENTIA_CONTAINER_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_ESSENTIA_CONTAINER_TEXTURE);
 
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float t) {
 		GL11.glPushMatrix();
@@ -44,7 +45,7 @@ public class TileEssentiaContainerRenderer extends TileEntitySpecialRenderer{
 
 	public void renderLabel(TileEntity tile, double x, double y, double z, float f) {
 		try{
-			if (this.tileEntityRenderer.renderEngine == null) {
+			if (Minecraft.getMinecraft().renderEngine == null) {
 				return;
 			}
 			if (((TileEssentiaContainer)tile).aspectFilter != null) {
@@ -88,7 +89,7 @@ public class TileEssentiaContainerRenderer extends TileEntitySpecialRenderer{
 	}
 	
 	public void renderLiquid(TileEntity tile, double x, double y, double z, float f) {
-		if (this.tileEntityRenderer.renderEngine == null) {
+		if (Minecraft.getMinecraft().renderEngine == null) {
 			return;
 		}	
 		TileEssentiaContainer entity = (TileEssentiaContainer)tile;
@@ -117,22 +118,22 @@ public class TileEssentiaContainerRenderer extends TileEntitySpecialRenderer{
 		}
 		int bright = 200;
 		if (tile.getWorldObj() != null) {
-			bright = Math.max(200, Block.blocksList[Thaumcraft.blockJar.blockID].getMixedBrightnessForBlock(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord));
+			bright = Math.max(200, Thaumcraft.blockJar.getMixedBrightnessForBlock(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord));
 		}
 		t.setBrightness(bright);
 
-		Icon icon = Thaumcraft.iconLiquid;
+		IIcon IIcon = Thaumcraft.IIconLiquid;
 
 		bindTexture(TextureMap.locationBlocksTexture);
 
 		Block jar = TMBlocks.creativeJar;
 
-		renderBlocks.renderFaceYNeg(jar, -0.5D, 0.0D, -0.5D, icon);
-		renderBlocks.renderFaceYPos(jar, -0.5D, 0.0D, -0.5D, icon);
-		renderBlocks.renderFaceZNeg(jar, -0.5D, 0.0D, -0.5D, icon);
-		renderBlocks.renderFaceZPos(jar, -0.5D, 0.0D, -0.5D, icon);
-		renderBlocks.renderFaceXNeg(jar, -0.5D, 0.0D, -0.5D, icon);
-		renderBlocks.renderFaceXPos(jar, -0.5D, 0.0D, -0.5D, icon);
+		renderBlocks.renderFaceYNeg(jar, -0.5D, 0.0D, -0.5D, IIcon);
+		renderBlocks.renderFaceYPos(jar, -0.5D, 0.0D, -0.5D, IIcon);
+		renderBlocks.renderFaceZNeg(jar, -0.5D, 0.0D, -0.5D, IIcon);
+		renderBlocks.renderFaceZPos(jar, -0.5D, 0.0D, -0.5D, IIcon);
+		renderBlocks.renderFaceXNeg(jar, -0.5D, 0.0D, -0.5D, IIcon);
+		renderBlocks.renderFaceXPos(jar, -0.5D, 0.0D, -0.5D, IIcon);
 
 		t.draw();	
 

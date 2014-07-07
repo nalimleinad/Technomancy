@@ -2,13 +2,12 @@ package democretes.renderer.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import democretes.blocks.dynamos.tiles.TileEssentiaDynamo;
 import democretes.blocks.dynamos.tiles.TileNodeDynamo;
 import democretes.lib.RenderIds;
 
@@ -18,7 +17,7 @@ public class BlockNodeDynamoRenderer implements ISimpleBlockRenderingHandler{
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		TileEntityRenderer.instance.renderTileEntityAt(new TileNodeDynamo(), 0.0D, 0.0D, 0.0D, 0.0F);
+		TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileNodeDynamo(), 0, 0, 0, 0);
 		GL11.glPopMatrix();
 	}
 
@@ -28,7 +27,7 @@ public class BlockNodeDynamoRenderer implements ISimpleBlockRenderingHandler{
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory(int mId) {
 		return true;
 	}
 

@@ -5,13 +5,13 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
@@ -28,8 +28,8 @@ import democretes.lib.Ref;
 
 public class ItemFusionFocus extends ItemBase implements IWandFocus {
 
-	public ItemFusionFocus(int id) {
-		super(id);
+	public ItemFusionFocus() {
+
 		setCreativeTab(Technomancy.tabsTM);
 	}
 
@@ -38,17 +38,9 @@ public class ItemFusionFocus extends ItemBase implements IWandFocus {
 	NodeModifier mod;
 	boolean cost = true;
 
-	public Icon iconFocus;
-
 	@Override
-	public void registerIcons(IconRegister icon) {
-		this.iconFocus = icon.registerIcon(Ref.TEXTURE_PREFIX + "focusFusion");
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public Icon getIconFromDamage(int par1) {
-		return iconFocus;
+	public void registerIcons(IIconRegister IIcon) {
+		itemIcon = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "focusFusion");
 	}
 
 	@Override
@@ -115,7 +107,7 @@ public class ItemFusionFocus extends ItemBase implements IWandFocus {
 	@Override
 	public boolean onFocusBlockStartBreak(ItemStack stack, int x, int y, int z, EntityPlayer player) {
 		try{
-			TileEntity entity = player.worldObj.getBlockTileEntity(x, y, z);
+			TileEntity entity = player.worldObj.getTileEntity(x, y, z);
 			if(stack != null && entity != null) {
 				if(Thaumcraft.TileNode.isInstance(entity) && Thaumcraft.ItemWandCasting.isInstance(stack.getItem())) {
 					if(Thaumcraft.getAspects.invoke(entity) != null) {
@@ -128,7 +120,7 @@ public class ItemFusionFocus extends ItemBase implements IWandFocus {
 								type =	(NodeType) Thaumcraft.getNodeType.invoke(entity);
 							}
 						}
-						entity.blockType.breakBlock(player.worldObj, x, y, z, entity.blockType.blockID, entity.blockMetadata);
+						entity.blockType.breakBlock(player.worldObj, x, y, z, entity.blockType, entity.blockMetadata);
 					}
 				}
 			}
@@ -136,45 +128,45 @@ public class ItemFusionFocus extends ItemBase implements IWandFocus {
 		return false;
 	}
 
-		@Override
-		public boolean acceptsEnchant(int id) {
-			if(id == Thaumcraft.enchantFrugal) {
-				return true;
+	@Override
+	public boolean acceptsEnchant(int id) {
+		if(id == Thaumcraft.enchantFrugal) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack,EntityPlayer player, List list, boolean par4) {
+		AspectList al = this.getVisCost();
+		if (al!=null && al.size()>0) {
+			list.add(StatCollector.translateToLocal(isVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1"));
+			for (Aspect aspect:al.getAspectsSorted()) {
+				DecimalFormat myFormatter = new DecimalFormat("#####.##");
+				String amount = myFormatter.format(al.getAmount(aspect)/100f);
+				list.add(" \u00A7"+aspect.getChatcolor()+aspect.getName()+"\u00A7r x "+ amount);
+
 			}
-			return false;
-		}
-
-		@Override
-		public void addInformation(ItemStack stack,EntityPlayer player, List list, boolean par4) {
-			AspectList al = this.getVisCost();
-			if (al!=null && al.size()>0) {
-				list.add(StatCollector.translateToLocal(isVisCostPerTick()?"item.Focus.cost2":"item.Focus.cost1"));
-				for (Aspect aspect:al.getAspectsSorted()) {
-					DecimalFormat myFormatter = new DecimalFormat("#####.##");
-					String amount = myFormatter.format(al.getAmount(aspect)/100f);
-					list.add(" \u00A7"+aspect.getChatcolor()+aspect.getName()+"\u00A7r x "+ amount);
-
-				}
-			}
-		}
-
-		@Override
-		public int getItemEnchantability() {
-			return 5;
-		}
-
-		@Override
-		public EnumRarity getRarity(ItemStack itemstack)    {
-			return EnumRarity.rare;
-		}
-
-		@Override
-		public Icon getFocusDepthLayerIcon() {
-			return null;
-		}
-
-		@Override
-		public Icon getOrnament() {
-			return null;
 		}
 	}
+
+	@Override
+	public int getItemEnchantability() {
+		return 5;
+	}
+
+	@Override
+	public EnumRarity getRarity(ItemStack itemstack)    {
+		return EnumRarity.rare;
+	}
+
+	@Override
+	public IIcon getOrnament() {
+		return null;
+	}
+
+	@Override
+	public IIcon getFocusDepthLayerIcon() {
+		return null;
+	}
+}

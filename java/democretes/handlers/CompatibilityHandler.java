@@ -1,5 +1,6 @@
 package democretes.handlers;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import democretes.compat.Thaumcraft;
@@ -27,7 +28,7 @@ public class CompatibilityHandler {
 	public static void smeltify() {
 		try{
 			if(ConfigHandler.bonus) {
-				Thaumcraft.addSmeltingBonus.invoke(null, "oreGold", new ItemStack(Item.goldNugget, 9, 0));
+				Thaumcraft.addSmeltingBonus.invoke(null, "oreGold", new ItemStack(Items.gold_nugget, 9, 0));
 				Thaumcraft.addSmeltingBonus.invoke(null, "oreIron", new ItemStack(Thaumcraft.itemNugget, 9, 0));
 				Thaumcraft.addSmeltingBonus.invoke(null, "oreCinnabar", new ItemStack(Thaumcraft.itemNugget, 9, 5));
 				Thaumcraft.addSmeltingBonus.invoke(null, "oreCopper", new ItemStack(Thaumcraft.itemNugget, 9, 1));

@@ -1,7 +1,7 @@
 package democretes.blocks.machines.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -9,8 +9,8 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import cofh.api.energy.EnergyStorage;
-import cofh.util.FluidHelper;
 import democretes.compat.BloodMagic;
+import democretes.util.WorldHelper;
 
 public class TileBloodFabricator extends TileMachineBase implements IFluidHandler {
 	
@@ -63,7 +63,7 @@ public class TileBloodFabricator extends TileMachineBase implements IFluidHandle
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
 		FluidStack stack = FluidRegistry.getFluidStack(fluid.getName(), 200);
-		int f = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, from.ordinal(), stack, false);
+		int f = WorldHelper.insertFluidIntoAdjacentFluidHandler(this, from, stack, false);
 		if(f == 200) {
 			return true;
 		}
@@ -85,9 +85,10 @@ public class TileBloodFabricator extends TileMachineBase implements IFluidHandle
 	public void writeCustomNBT(NBTTagCompound compound) {
 		this.tank.writeToNBT(compound);
 	}
+	 
 	
 	@Override
-	public boolean canInterface(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from) {
 		return from==ForgeDirection.DOWN;
 	}
 

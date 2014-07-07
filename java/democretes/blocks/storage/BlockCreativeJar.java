@@ -1,21 +1,19 @@
 package democretes.blocks.storage;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import democretes.blocks.BlockBase;
 import democretes.compat.Thaumcraft;
 import democretes.lib.Names;
@@ -24,17 +22,17 @@ import democretes.lib.RenderIds;
 
 public class BlockCreativeJar extends BlockBase {
 	
-	public BlockCreativeJar(int id) {
-		super(id);
+	public BlockCreativeJar() {
+		
 		this.setHardness(1F);
-		this.setUnlocalizedName(Ref.MOD_PREFIX + Names.creativeJar);
+		this.setBlockName(Ref.MOD_PREFIX + Names.creativeJar);
 		this.setBlockBounds(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.75F, 0.8125F);
 	}
 	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
 		int face = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 0x3;
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if ((tile instanceof TileCreativeJar)) {
 			if (face == 0) {
 				((TileCreativeJar)tile).facing = 2;
@@ -52,8 +50,8 @@ public class BlockCreativeJar extends BlockBase {
 	}
 	
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float vecX, float vecY, float vecZ)  {
-		if (world.getBlockTileEntity(x, y, z) instanceof TileCreativeJar ) {
-			TileCreativeJar container = (TileCreativeJar)world.getBlockTileEntity(x, y, z);	  
+		if (world.getTileEntity(x, y, z) instanceof TileCreativeJar ) {
+			TileCreativeJar container = (TileCreativeJar)world.getTileEntity(x, y, z);	  
 			ItemStack item = player.getHeldItem();		
 			//Removes labels
 			if (container.aspectFilter != null && item == null  && player.isSneaking() && side == container.facing) {
@@ -130,7 +128,7 @@ public class BlockCreativeJar extends BlockBase {
 		return true;
 	}	
 
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileCreativeJar();
 	}
 	
@@ -151,22 +149,21 @@ public class BlockCreativeJar extends BlockBase {
 	
 	public void setAspects(ItemStack itemstack, AspectList aspects){
 	    if (!itemstack.hasTagCompound()) {
-	      itemstack.setTagCompound(new NBTTagCompound("tag"));
+	      itemstack.setTagCompound(new NBTTagCompound());
 	   }
 	    aspects.writeToNBT(itemstack.getTagCompound());
 	}
 
-	public Icon iconJar;
-	public Icon iconLiquid;
+	public IIcon IIconJar;
+	public IIcon IIconLiquid;
 	
-	public void RegisterIcons(IconRegister icon) {
-		iconJar = icon.registerIcon("technom:models/essentiaContainer");
-		iconLiquid = icon.registerIcon("technom:animatedglow");
-		
+	public void registerBlockIcons(IIconRegister IIcon) {
+		IIconJar = IIcon.registerIcon("technom:models/essentiaContainer");
+		IIconLiquid = IIcon.registerIcon("technom:animatedglow");
 	}
 	
-	public Icon getIcon(int side, int meta) {
-		return iconJar;
+	public IIcon getIcon(int side, int meta) {
+		return IIconJar;
 		
 	}
 }

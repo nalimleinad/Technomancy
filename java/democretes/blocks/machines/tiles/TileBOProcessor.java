@@ -1,14 +1,12 @@
 package democretes.blocks.machines.tiles;
 
-import java.lang.reflect.InvocationTargetException;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import vazkii.botania.api.ISpecialFlower;
 import vazkii.botania.api.mana.IManaPool;
 import vazkii.botania.api.mana.IManaReceiver;
+import vazkii.botania.api.subtile.ISpecialFlower;
 import democretes.blocks.TMBlocks;
 import democretes.compat.Botania;
 
@@ -27,7 +25,7 @@ public class TileBOProcessor extends TileProcessorBase implements IManaReceiver 
 		super.updateEntity();
 		for(int x = -4; x < 5; x++) {
 			for(int z = -4; z < 5; z++) {
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord + x, yCoord, zCoord + z);
+				TileEntity tile = worldObj.getTileEntity(xCoord + x, yCoord, zCoord + z);
 				if(tile instanceof IManaPool) {
 					IManaPool pool = (IManaPool)tile;
 					if(pool.getCurrentMana() >= 500 && this.mana <= this.maxMana - 500) {
@@ -42,7 +40,7 @@ public class TileBOProcessor extends TileProcessorBase implements IManaReceiver 
 	void checkForFlowers() {
 		for(int x = -4; x < 5; x++) {
 			for(int z = -4; z < 5; z++) {
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord + x, yCoord, zCoord + z);
+				TileEntity tile = worldObj.getTileEntity(xCoord + x, yCoord, zCoord + z);
 				if(tile instanceof ISpecialFlower) {
 					this.flowers += 1;
 				}

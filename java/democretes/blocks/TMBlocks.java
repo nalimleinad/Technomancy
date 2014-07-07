@@ -70,21 +70,21 @@ public class TMBlocks {
 	
 	public static void initThaumcraft() {
 		//Block Initializaton
-		nodeDynamo = new BlockNodeDynamo(Ids.dynNode);
-		essentiaContainer = new BlockEssentiaContainer(Ids.contEssentia);
-		cosmeticOpaque = new BlockCosmeticOpaque(Ids.cosmeticOpaque);
-		essentiaDynamo = new BlockEssentiaDynamo(Ids.dynEssentia);
-		biomeMorpher = new BlockBiomeMorpher(Ids.biomeMorpher);
-		nodeGenerator = new BlockNodeGenerator(Ids.nodeGen);
-		fluxLamp = new BlockFluxLamp(Ids.fluxLamp);
-		teslaCoil = new BlockTeslaCoil(Ids.wirelessCoil);
-		electricBellows = new BlockElectricBellows(Ids.electricBellows);
-		creativeJar = new BlockCreativeJar(Ids.creativeJar);
-		crystalBlock = new BlockCrystal(Ids.crystalBlock);
-		reconstructorBlock = new BlockReconstructor(Ids.reconstructor);
-		condenserBlock = new BlockCondenser(Ids.condenser);
-		processorTC = new BlockProcessor.BlockTCProcessor(Ids.processorTC);
-		eldritchConsumer = new BlockEldritchConsumer(Ids.eldrichConsumer);
+		nodeDynamo = new BlockNodeDynamo();
+		essentiaContainer = new BlockEssentiaContainer();
+		cosmeticOpaque = new BlockCosmeticOpaque();
+		essentiaDynamo = new BlockEssentiaDynamo();
+		biomeMorpher = new BlockBiomeMorpher();
+		nodeGenerator = new BlockNodeGenerator();
+		fluxLamp = new BlockFluxLamp();
+		teslaCoil = new BlockTeslaCoil();
+		electricBellows = new BlockElectricBellows();
+		creativeJar = new BlockCreativeJar();
+		crystalBlock = new BlockCrystal();
+		reconstructorBlock = new BlockReconstructor();
+		condenserBlock = new BlockCondenser();
+		processorTC = new BlockProcessor.BlockTCProcessor();
+		eldritchConsumer = new BlockEldritchConsumer();
 		
 		//Registry
 		GameRegistry.registerBlock(nodeDynamo, Names.nodeDynamo);
@@ -123,9 +123,9 @@ public class TMBlocks {
 	
 	public static void initBloodMagic() {
 		//Block Initialization
-		bloodDynamo = new BlockBloodDynamo(Ids.bloodDynamo);	
-		bloodFabricator = new BlockBloodFabricator(Ids.bloodFabricator);
-		processorBM = new BlockProcessor.BlockBMProcessor(Ids.processorBM);
+		bloodDynamo = new BlockBloodDynamo();	
+		bloodFabricator = new BlockBloodFabricator();
+		processorBM = new BlockProcessor.BlockBMProcessor();
 
 		//Registry
 		GameRegistry.registerBlock(bloodDynamo, Names.bloodDynamo);
@@ -141,9 +141,9 @@ public class TMBlocks {
 	
 	public static void initBotania() {
 		//Block Initialization
-		flowerDynamo = new BlockFlowerDynamo(Ids.flowerDyn);
-		manaFabricator = new BlockManaFabricator(Ids.manaFab);
-		processorBO = new BlockProcessor.BlockBOProcessor(Ids.processorBO);
+		flowerDynamo = new BlockFlowerDynamo();
+		manaFabricator = new BlockManaFabricator();
+		processorBO = new BlockProcessor.BlockBOProcessor();
 		
 		//Block Registry
 		GameRegistry.registerBlock(flowerDynamo, Names.flowerDynamo);

@@ -1,21 +1,16 @@
 package democretes.blocks.machines.tiles;
 
 import java.lang.reflect.Method;
-import java.util.Random;
 
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.Chunk;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.nodes.INode;
-import thaumcraft.api.nodes.NodeModifier;
-import thaumcraft.api.nodes.NodeType;
+import thaumcraft.api.aspects.IAspectContainer;
 import cofh.api.energy.EnergyStorage;
-import democretes.blocks.TMBlocks;
 import democretes.compat.Thaumcraft;
 
 
-public class TileBiomeMorpher extends TileMachineBase implements INode{	
+public class TileBiomeMorpher extends TileMachineBase implements IAspectContainer{	
 	
 	private AspectList aspects = new AspectList();
 	private int amount = 35;
@@ -157,48 +152,5 @@ public class TileBiomeMorpher extends TileMachineBase implements INode{
 	public int containerContains(Aspect tag) {
 		return this.aspects.getAmount(tag);
 	}
-
-	@Override
-	public String getId() {
-		return null;
-	}
-
-	@Override
-	public NodeType getNodeType() {
-		switch (this.blockMetadata) {
-		case 0:
-			return NodeType.PURE;
-		case 1:
-			return NodeType.DARK;
-		case 2:
-			return NodeType.TAINTED;
-		}
-		return null;
-	}
-
-	@Override
-	public void setNodeType(NodeType nodeType) {	
-	}
-
-	@Override
-	public void setNodeModifier(NodeModifier nodeModifier) {
-	}
-
-	@Override
-	public NodeModifier getNodeModifier() {
-		return null;
-	}
-
-	@Override
-	public int getNodeVisBase() {
-		return 35;
-	}
-
-	@Override
-	public void setNodeVisBase(short nodeVisBase) {
-	}
 	
-	
-	
-
 }

@@ -21,7 +21,7 @@ public class TileReconstructorRenderer extends TileEntitySpecialRenderer{
 	
 	ModelReconstructor model = new ModelReconstructor();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_RECONSTRUCTOR_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_RECONSTRUCTOR_TEXTURE);
 
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float f) {
 		
@@ -36,20 +36,20 @@ public class TileReconstructorRenderer extends TileEntitySpecialRenderer{
 		model.render();		
 		
 		TileReconstructor rec = (TileReconstructor)entity;
-		if(rec.worldObj != null && rec.getStackInSlot(0) != null) {
+		if(rec.getWorldObj() != null && rec.getStackInSlot(0) != null) {
 			EntityItem entityitem = null;
 		    GL11.glPushMatrix();
 		    GL11.glTranslatef((float)x + 0.5F, (float)y + 1.15F, (float)z + 0.5F);
 		    float ticks = Minecraft.getMinecraft().renderViewEntity.ticksExisted + f;
 		    GL11.glRotatef(ticks % 360.0F, 0.0F, 1.0F, 0.0F);
-		    if (((rec.getStackInSlot(0).getItem() instanceof ItemBlock)) && (rec.getStackInSlot(0).itemID < Block.blocksList.length)) {
+		    if (rec.getStackInSlot(0).getItem() instanceof ItemBlock) {
 		    	GL11.glScalef(2.0F, 2.0F, 2.0F);
 		    } else {
 		    	GL11.glScalef(1.0F, 1.0F, 1.0F);
 		    }
 			ItemStack is = rec.getStackInSlot(0).copy();
 		    is.stackSize = 1;
-		    entityitem = new EntityItem(rec.worldObj, 0.0D, 0.0D, 0.0D, is);
+		    entityitem = new EntityItem(rec.getWorldObj(), 0.0D, 0.0D, 0.0D, is);
 		    entityitem.hoverStart = 0.0F;
 		    
 		    RenderManager.instance.renderEntityWithPosYaw(entityitem, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);

@@ -1,8 +1,5 @@
 package democretes.blocks.dynamos.tiles;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,7 +19,7 @@ public class TileFlowerDynamo extends TileDynamoBase implements IManaReceiver {
 		super.updateEntity();
 		for(int x = -4; x < 5; x++) {
 			for(int z = -4; z < 5; z++) {
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord + x, yCoord, zCoord + z);
+				TileEntity tile = worldObj.getTileEntity(xCoord + x, yCoord, zCoord + z);
 				if(tile instanceof IManaPool) {
 					IManaPool pool = (IManaPool)tile;
 					if(pool.getCurrentMana() >= 100 && mana <= maxMana - 100) {

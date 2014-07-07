@@ -1,11 +1,10 @@
 package democretes.blocks.machines;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,15 +16,14 @@ import democretes.lib.RenderIds;
 
 public class BlockReconstructor extends BlockBase {
 
-	public BlockReconstructor(int id) {
-		super(id);
-		setUnlocalizedName(Ref.MOD_PREFIX + Names.reconstructor);
+	public BlockReconstructor() {
+		setBlockName(Ref.MOD_PREFIX + Names.reconstructor);
 	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		if(!world.isRemote) {
-			TileEntity tile = world.getBlockTileEntity(x, y, z);
+			TileEntity tile = world.getTileEntity(x, y, z);
 			if(tile != null) {
 				if(tile instanceof TileReconstructor == false) {
 					return false;
@@ -33,13 +31,17 @@ public class BlockReconstructor extends BlockBase {
 				TileReconstructor recon = (TileReconstructor)tile;
 				if(player.getHeldItem() == null) {
 					if(player.isSneaking() && recon.contents[0] != null) {
-						if (!player.inventory.addItemStackToInventory(new ItemStack(recon.contents[0].itemID, 1, recon.contents[0].getItemDamage()))) {	
-					    	world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, new ItemStack(recon.contents[0].itemID, 1, recon.contents[0].getItemDamage())));
+						if (!player.inventory.addItemStackToInventory(new ItemStack(recon.contents[0].getItem(), 1,
+								recon.contents[0].getItemDamage()))) {	
+					    	world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, new ItemStack(recon.contents[0].getItem(),
+					    			1, recon.contents[0].getItemDamage())));
 					    }	
 						recon.contents[0] = null;						
 					}else if(recon.contents[1] != null) {
-						if (!player.inventory.addItemStackToInventory(new ItemStack(recon.contents[1].itemID, recon.contents[1].stackSize, recon.contents[1].getItemDamage()))) {	
-					    	world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, new ItemStack(recon.contents[1].itemID, recon.contents[1].stackSize, recon.contents[1].getItemDamage())));
+						if (!player.inventory.addItemStackToInventory(new ItemStack(recon.contents[1].getItem(), recon.contents[1].stackSize,
+								recon.contents[1].getItemDamage()))) {	
+					    	world.spawnEntityInWorld(new EntityItem(world, x + 0.5F, y + 0.5F, z + 0.5F, new ItemStack(recon.contents[1].getItem(),
+					    			recon.contents[1].stackSize, recon.contents[1].getItemDamage())));
 					    }	
 						recon.contents[1] = null;					
 					}
@@ -56,7 +58,7 @@ public class BlockReconstructor extends BlockBase {
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileReconstructor();
 	}
 	
@@ -76,11 +78,8 @@ public class BlockReconstructor extends BlockBase {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public Icon iconReconstructor;
-	
-	@SideOnly(Side.CLIENT)
-	public void RegisterIcons(IconRegister icon) {
-		this.iconReconstructor = icon.registerIcon(Ref.TEXTURE_PREFIX + Names.condenserBlock);
+	public void registerBlockIcons(IIconRegister IIcon) {
+		blockIcon = IIcon.registerIcon(Ref.TEXTURE_PREFIX + Names.condenserBlock);
 	}
 
 }

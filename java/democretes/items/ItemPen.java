@@ -2,10 +2,10 @@ package democretes.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import thaumcraft.api.IScribeTools;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,24 +15,24 @@ import democretes.lib.Ref;
 
 public class ItemPen extends ItemBase implements IScribeTools {
 
-	public ItemPen(int id) {
-		super(id);
+	public ItemPen() {
+		
 		this.maxStackSize = 1;
 		this.canRepair = true;
 		setMaxDamage(3000);
 	}
 	
 	
-	public Icon penIcon;
+	public IIcon penIIcon;
 	
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister icon) {
-        this.penIcon = icon.registerIcon(Ref.TEXTURE_PREFIX + "penItem");
+	@Override
+    public void registerIcons(IIconRegister IIcon) {
+        this.penIIcon = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "penItem");
     }
     
     @SideOnly(Side.CLIENT)
-    public Icon getIconFromDamage(int par1) {
-    return this.penIcon;
+    public IIcon getIconFromDamage(int par1) {
+    return this.penIIcon;
     }
     
 	public String getUnlocalizedName(ItemStack stack) {

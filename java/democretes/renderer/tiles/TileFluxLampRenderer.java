@@ -3,21 +3,21 @@ package democretes.renderer.tiles;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import cofh.util.FluidHelper;
 import democretes.blocks.machines.tiles.TileFluxLamp;
 import democretes.compat.Thaumcraft;
 import democretes.lib.Ref;
 import democretes.renderer.models.ModelFluxLamp;
+import democretes.util.WorldHelper;
 
 public class TileFluxLampRenderer extends TileEntitySpecialRenderer {
 	
 	ModelFluxLamp model = new ModelFluxLamp();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_FLUX_LAMP_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_FLUX_LAMP_TEXTURE);
 
 	
 	@Override
@@ -46,11 +46,11 @@ public class TileFluxLampRenderer extends TileEntitySpecialRenderer {
 	}
 	
 	public void renderNozzles(TileEntity entity) {
-		if(Thaumcraft.TileTube.isInstance(entity.worldObj.getBlockTileEntity(entity.xCoord, entity.yCoord + 1, entity.zCoord))) {
+		if(Thaumcraft.TileTube.isInstance(entity.getWorldObj().getTileEntity(entity.xCoord, entity.yCoord + 1, entity.zCoord))) {
 			model.renderTop();
 		}
 		for(int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++) {
-			if(FluidHelper.isAdjacentFluidHandler(entity, i)) {
+			if(WorldHelper.isFluidHandler(entity, ForgeDirection.VALID_DIRECTIONS[i])) {
 				switch(i) {
 				case 0:
 					model.renderBottom();break;

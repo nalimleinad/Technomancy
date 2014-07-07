@@ -14,7 +14,7 @@ public class TileBiomeMorpherRenderer extends TileEntitySpecialRenderer{
 	
 	ModelBiomeMorpher model = new ModelBiomeMorpher();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_BIOME_MODIFIER_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_BIOME_MODIFIER_TEXTURE);
 
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float f) {
 		

@@ -9,6 +9,7 @@ public class BloodMagic {
 	public static boolean bm = true;
 	public static Fluid lifeEssenceFluid;
 	public static Item divinationSigil;
+	public static Item bucketLife;
 
 
 	public static void init() {
@@ -17,6 +18,7 @@ public class BloodMagic {
 			lifeEssenceFluid = (Fluid) BMM.getField("lifeEssenceFluid").get(BMM);
 			Class BMI = Class.forName("WayofTime.alchemicalWizardry.ModItems");
 			divinationSigil = (Item) BMI.getField("divinationSigil").get(BMI);
+			bucketLife = (Item) BMI.getField("bucketLife").get(BMI);
 			System.out.println("Technomancy: Blood Magic Module Activated");
 		}catch(Exception e){bm = false;}
 	}

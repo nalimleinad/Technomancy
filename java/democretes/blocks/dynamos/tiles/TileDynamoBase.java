@@ -2,23 +2,22 @@ package democretes.blocks.dynamos.tiles;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
-import cofh.api.tileentity.IEnergyInfo;
-import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.util.BlockHelper;
-import cofh.util.EnergyHelper;
 import cpw.mods.fml.relauncher.Side;
 import democretes.blocks.TileTechnomancy;
-import democretes.lib.Platform;
+import democretes.util.EnergyHelper;
+import democretes.util.Loc;
+import democretes.util.WorldHelper;
 
-public abstract class TileDynamoBase extends TileTechnomancy implements IEnergyHandler, IEnergyInfo, IReconfigurableFacing {
+public abstract class TileDynamoBase extends TileTechnomancy implements IEnergyHandler {
 
 
 	public int minPower = 4;
@@ -68,13 +67,14 @@ public abstract class TileDynamoBase extends TileTechnomancy implements IEnergyH
 	protected void transferEnergy(int bSide){
 		updateAdjacentHandlers();
 		if(this.adjacentHandler != null) {
-			this.energyStorage.modifyEnergyStored(-this.adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[(bSide ^ 0x1)], Math.min(this.maxTransfer, this.energyStorage.getEnergyStored()), false));
+			this.energyStorage.modifyEnergyStored(-this.adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide],
+					Math.min(this.maxTransfer, this.energyStorage.getEnergyStored()), false));
 		}
 	}
 
 	@Override
 	public void updateEntity(){
-		if (Platform.isClient()) {
+		if (Loc.isClient()) {
 			return;
 		}
 		if (!this.cached) {
@@ -126,11 +126,11 @@ public abstract class TileDynamoBase extends TileTechnomancy implements IEnergyH
 
 
 	protected void updateAdjacentHandlers() {
-		if (Platform.isClient()) {
+		if (Loc.isClient()) {
 			return;
 		}
-		TileEntity tile = BlockHelper.getAdjacentTileEntity(this, this.facing);
-		if (EnergyHelper.isEnergyHandlerFromSide(tile, ForgeDirection.VALID_DIRECTIONS[(this.facing ^ 0x1)])) {
+		TileEntity tile = WorldHelper.getAdjacentTileEntity(this, facing);
+		if (EnergyHelper.isHandler(tile, ForgeDirection.VALID_DIRECTIONS[facing])) {
 			this.adjacentHandler = ((IEnergyHandler)tile);			
 		}else{
 			this.adjacentHandler = null;
@@ -180,30 +180,17 @@ public abstract class TileDynamoBase extends TileTechnomancy implements IEnergyH
 	}
 
 	public void sendUpdatePacket(Side side) {
-		worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
-		shouldRefresh(worldObj.getBlockId(xCoord, yCoord, zCoord), worldObj.getBlockId(xCoord, yCoord, zCoord), 0, 0, worldObj, xCoord,
-				yCoord, zCoord);
+		worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+		shouldRefresh(worldObj.getBlock(xCoord, yCoord, zCoord), worldObj.getBlock(xCoord, yCoord, zCoord), 0, 0, worldObj, xCoord, yCoord, zCoord);
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	public boolean canInsertItem(int slot, ItemStack stack, int side){
-		return side != this.facing;
+		return side != facing;
 	}
 
 	public boolean canExtractItem(int slot, ItemStack stack, int side){
-		return side != this.facing;
-	}
-
-	public int getFacing(){
-		return this.facing;
-	}
-
-	public boolean setFacing(int side){
-		return false;
-	}
-
-	public boolean allowYAxisFacing(){
-		return true;
+		return side != facing;
 	}
 
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate){
@@ -214,8 +201,8 @@ public abstract class TileDynamoBase extends TileTechnomancy implements IEnergyH
 		return 0;
 	}
 
-	public boolean canInterface(ForgeDirection from){
-		return from.ordinal() == this.facing;
+	public boolean canConnectEnergy(ForgeDirection from){
+		return from.ordinal() == facing;
 	}
 
 	public int getEnergyStored(ForgeDirection from){
@@ -226,22 +213,6 @@ public abstract class TileDynamoBase extends TileTechnomancy implements IEnergyH
 		return this.energyStorage.getMaxEnergyStored();
 	}
 
-	public int getEnergyPerTick(){
-		return calcEnergy();
-	}
-
-	public int getMaxEnergyPerTick(){
-		return this.maxPower;
-	}
-
-	public int getEnergy(){
-		return this.energyStorage.getEnergyStored();
-	}
-
-	public int getMaxEnergy(){
-		return this.maxEnergy;
-	}
-
 	protected abstract boolean canGenerate();
 
 	protected abstract void generate();
@@ -250,15 +221,15 @@ public abstract class TileDynamoBase extends TileTechnomancy implements IEnergyH
 	public Packet getDescriptionPacket() {
 		if(!worldObj.isRemote){
 			NBTTagCompound comp = new NBTTagCompound();writeToNBT(comp);
-			return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, comp);
+			return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, comp);
 		}
 		return null;
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
-		if(pkt!=null && pkt.data!=null){
-			readFromNBT(pkt.data);
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		if(pkt!=null && pkt.func_148857_g()!=null){
+			readFromNBT(pkt.func_148857_g());
 		}
 	}
 }

@@ -17,7 +17,7 @@ public class Coords {
 	}
 	
 	public TileEntity getTile() {
-		return w.getBlockTileEntity(x, y, z);
+		return w.getTileEntity(x, y, z);
 	}
 	
 	public void print(){

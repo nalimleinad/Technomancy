@@ -10,7 +10,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import democretes.blocks.TMBlocks;
 import democretes.compat.BloodMagic;
@@ -25,20 +24,13 @@ import democretes.handlers.ResearchHandler;
 import democretes.items.TMItems;
 import democretes.lib.CreativeTabTM;
 import democretes.lib.Ref;
-import democretes.network.PacketHandler;
 import democretes.proxies.CommonProxy;
 import democretes.util.Loc;
 
 @Mod(modid = Ref.MOD_ID, 
 	name = Ref.MOD_NAME, 
 	version = Ref.MOD_VERSION, 
-	dependencies = "after:Thaumcraft;required-after:CoFHCore;after:AWWayofTime;after:Botania;after:ThermalExpansion;")
-
-@NetworkMod(channels = { Ref.CHANNEL_NAME }, 
-	clientSideRequired = true, 
-	serverSideRequired = false, 
-	packetHandler = PacketHandler.class)
-
+	dependencies = "after:Thaumcraft;after:CoFHCore;after:AWWayofTime;after:Botania;after:ThermalExpansion;")/*required-*/
 public class Technomancy {
 
     @Instance(Ref.MOD_ID)
@@ -81,7 +73,7 @@ public class Technomancy {
          }
          
     	proxy.initRenderers();
-    	NetworkRegistry.instance().registerGuiHandler(instance, proxy);
+    	NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
     }
 
     @EventHandler

@@ -2,8 +2,9 @@ package democretes.blocks.machines.tiles;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -33,7 +34,7 @@ public class TileReconstructor extends TileMachineBase implements IAspectContain
 			if(!worldObj.isRemote) {
 				if(this.contents[0] != null) {
 					for(int number : ConfigHandler.blacklist) {
-						if(contents[0].itemID == number) {	
+						if(Item.getIdFromItem(contents[0].getItem()) == number) {	
 							pass = false;
 							return;
 						}
@@ -69,16 +70,16 @@ public class TileReconstructor extends TileMachineBase implements IAspectContain
 									}
 								}
 								if(check == al.size()) {
-									for(Aspect aspect : this.aspects.getAspects()) {
-										this.aspects.remove(aspect);
+									for(Aspect aspect : aspects.getAspects()) {
+										aspects.remove(aspect);
 									}
 								}else{
 									return;
 								}
-								if(this.contents[1] == null) {
-									this.contents[1] = this.contents[0].copy();
-								}else if(this.contents[1].getItem() == this.contents[0].getItem()) {
-									this.contents[1] = new ItemStack(this.contents[1].itemID, this.contents[1].stackSize + 1, this.contents[1].getItemDamage());
+								if(contents[1] == null) {
+									contents[1] = contents[0].copy();
+								}else if(contents[1].getItem() == contents[0].getItem()) {
+									contents[1] = new ItemStack(contents[1].getItem(), contents[1].stackSize + 1,contents[1].getItemDamage());
 								}	
 							}
 						}
@@ -171,7 +172,7 @@ public class TileReconstructor extends TileMachineBase implements IAspectContain
 			if (this.contents[slot].stackSize <= amount) {
 				itemstack = this.contents[slot];
 				this.contents[slot] = null;
-				this.onInventoryChanged();
+				onInventoryChanged();
 				return itemstack;
 			}else{
 				itemstack = this.contents[slot].splitStack(amount);
@@ -179,7 +180,7 @@ public class TileReconstructor extends TileMachineBase implements IAspectContain
 				if (this.contents[slot].stackSize == 0) {
 					this.contents[slot] = null;
 				}
-				this.onInventoryChanged();
+				onInventoryChanged();
 				return itemstack;
 			}
 		}else{
@@ -187,6 +188,10 @@ public class TileReconstructor extends TileMachineBase implements IAspectContain
 		}
 	}
 
+	private void onInventoryChanged() {
+		
+	}
+	
 	@Override
 	public ItemStack getStackInSlotOnClosing(int i) {
 		return null;
@@ -203,15 +208,7 @@ public class TileReconstructor extends TileMachineBase implements IAspectContain
 		this.onInventoryChanged();
 	}
 
-	@Override
-	public String getInvName() {
-		return "reconstructorInv";
-	}
-
-	@Override
-	public boolean isInvNameLocalized() {
-		return true;
-	}
+	
 
 	@Override
 	public int getInventoryStackLimit() {
@@ -224,17 +221,28 @@ public class TileReconstructor extends TileMachineBase implements IAspectContain
 	}
 
 	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
-
-	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
 		return true;
 	}
+	
 	public static void handlePacket(ByteArrayDataInput data) {
 
 	}
+	
+	@Override
+	public String getInventoryName() {
+		return "reconstructorInv";
+	}
+	
+	@Override
+	public boolean hasCustomInventoryName() {
+		return false;
+	}
+	
+	@Override
+	public void openInventory() {}
+	
+	@Override
+	public void closeInventory() {}
 
 }

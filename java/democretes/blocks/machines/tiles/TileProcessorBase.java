@@ -51,13 +51,17 @@ public class TileProcessorBase extends TileTechnomancy implements ISidedInventor
 			if(canProcess()) {
 				if(inv[1] != null) {
 					if(ore2) {
-						if(inv[1].getItem().itemID != getOreEquivalencies(OreDictionary.getOreID(inv[0])).itemID) {
-							active = false;
-							return;
-						}
+						try{
+							for(int i : OreDictionary.getOreIDs(inv[0])){
+								if(inv[1].getItem() != getOreEquivalencies(i)) {
+									active = false;
+									return;
+								}
+							}
+						}catch(Exception e){}
 					}
 					if(ore1) {
-						if(inv[0].getItem().itemID != inv[1].getItem().itemID) {
+						if(inv[0].getItem() != inv[1].getItem()) {
 							active = false;
 							return;
 						}
@@ -223,10 +227,10 @@ public class TileProcessorBase extends TileTechnomancy implements ISidedInventor
 
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		NBTTagList nbttaglist = compound.getTagList("Items");
+		NBTTagList nbttaglist = compound.getTagList("Items", 10);
 		inv = new ItemStack[getSizeInventory()];
 		for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-			NBTTagCompound compound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+			NBTTagCompound compound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
 			int j = compound1.getByte("Slot") & 255;
 			if (j >= 0 && j < inv.length)            {
 				inv[j] = ItemStack.loadItemStackFromNBT(compound1);
@@ -280,16 +284,6 @@ public class TileProcessorBase extends TileTechnomancy implements ISidedInventor
 	}
 
 	@Override
-	public String getInvName() {
-		return "processorInv" + tagCompound;
-	}
-
-	@Override
-	public boolean isInvNameLocalized() {
-		return false;
-	}
-
-	@Override
 	public int getInventoryStackLimit() {
 		return 64;
 	}
@@ -298,12 +292,6 @@ public class TileProcessorBase extends TileTechnomancy implements ISidedInventor
 	public boolean isUseableByPlayer(EntityPlayer player) {
 		return true;
 	}
-
-	@Override
-	public void openChest() {}
-
-	@Override
-	public void closeChest() {}
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
@@ -335,5 +323,21 @@ public class TileProcessorBase extends TileTechnomancy implements ISidedInventor
 		}
 		return false;
 	}
+
+	@Override
+	public String getInventoryName() {
+		return null;
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() {
+		return false;
+	}
+
+	@Override
+	public void openInventory() {}
+
+	@Override
+	public void closeInventory() {}
 
 }

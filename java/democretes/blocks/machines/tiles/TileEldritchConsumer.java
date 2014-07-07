@@ -3,12 +3,12 @@ package democretes.blocks.machines.tiles;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFluid;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.BlockFluidClassic;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectSource;
@@ -117,8 +117,8 @@ public class TileEldritchConsumer extends TileMachineBase implements IAspectSour
 			for(int yy = 0; yy<yCoord ; yy++){
 				for(int xx = -current.r;(current.r==0 ? xx==current.r : xx<=current.r); xx++){
 					for(int zz = -current.r;(current.r==0 ? zz==current.r : zz<=current.r); zz++){
-						if(worldObj.getBlockId(xCoord+xx, yy, zCoord+zz)>0 && isBlockOk(worldObj.getBlockTileEntity(xCoord+xx,
-								yy, zCoord+zz), Block.blocksList[worldObj.getBlockId(xCoord+xx, yy, zCoord+zz)])){
+						if(worldObj.getBlock(xCoord+xx, yy, zCoord+zz).isAir(worldObj, xCoord+xx, yy, zCoord+zz) &&
+								isBlockOk(worldObj.getTileEntity(xCoord+xx, yy, zCoord+zz), worldObj.getBlock(xCoord+xx, yy, zCoord+zz))){
 							return new Coords(xCoord+xx, yy, zCoord+zz, worldObj);
 						}
 					}
@@ -128,8 +128,8 @@ public class TileEldritchConsumer extends TileMachineBase implements IAspectSour
 			for(int yy = yCoord-current.h; yy<yCoord ; yy++){
 				for(int xx = -current.r;(current.r==0 ? xx==current.r : xx<=current.r); xx++){
 					for(int zz = -current.r;(current.r==0 ? zz==current.r : zz<=current.r); zz++){
-						if(worldObj.getBlockId(xCoord+xx, yy, zCoord+zz)>0 && isBlockOk(worldObj.getBlockTileEntity(xCoord+xx,
-								yy, zCoord+zz), Block.blocksList[worldObj.getBlockId(xCoord+xx, yy, zCoord+zz)])){
+						if(worldObj.getBlock(xCoord+xx, yy, zCoord+zz).isAir(worldObj, xCoord+xx, yy, zCoord+zz) &&
+								isBlockOk(worldObj.getTileEntity(xCoord+xx, yy, zCoord+zz), worldObj.getBlock(xCoord+xx, yy, zCoord+zz))){
 							return new Coords(xCoord+xx, yy, zCoord+zz, worldObj);
 						}
 					}
@@ -146,7 +146,7 @@ public class TileEldritchConsumer extends TileMachineBase implements IAspectSour
 		if(block.getBlockHardness(worldObj, xCoord, yCoord, zCoord)==-1)
 			return false;
 		
-		if(block instanceof BlockFluid || block instanceof BlockFluidBase)
+		if(block instanceof BlockFluidClassic || block instanceof BlockFluidBase)
 			return false;
 		
 		return true;
@@ -154,10 +154,9 @@ public class TileEldritchConsumer extends TileMachineBase implements IAspectSour
 
 	private void processFromCoords(Coords c) {
 		try{
-			ArrayList<ItemStack> drops = Block.blocksList[c.w.getBlockId(c.x, c.y, c.z)].getBlockDropped(worldObj, c.x, c.y, c.z, c.w
+			ArrayList<ItemStack> drops = c.w.getBlock(c.x, c.y, c.z).getDrops(worldObj, c.x, c.y, c.z, c.w
 					.getBlockMetadata(c.x, c.y, c.z), 0);
-			Block.blocksList[c.w.getBlockId(c.x, c.y, c.z)].breakBlock(c.w, c.x, c.y, c.z, c.w.getBlockId(c.x, c.y, c.z),
-					c.w.getBlockMetadata(c.x, c.y, c.z));
+			c.w.getBlock(c.x, c.y, c.z).breakBlock(c.w, c.x, c.y, c.z, c.w.getBlock(c.x, c.y, c.z), c.w.getBlockMetadata(c.x, c.y, c.z));
 			c.w.setBlockToAir(c.x, c.y, c.z);
 			for(ItemStack items : drops){
 				//qc.w.spawnEntityInWorld(new BlockTrail(c.w, c.x, c.y, c.z, xCoord, yCoord, zCoord, items));
@@ -280,14 +279,14 @@ public class TileEldritchConsumer extends TileMachineBase implements IAspectSour
 	}
 
 	@Override
-	public int takeVis(Aspect paramAspect, int paramInt) {
+	public int takeEssentia(Aspect paramAspect, int paramInt, ForgeDirection dir) {
 		if(!list.aspects.containsKey(paramAspect))
 			return 0;
 		return Math.min(paramInt, list.getAmount(paramAspect));
 	}
 
 	@Override
-	public int addVis(Aspect paramAspect, int paramInt) {
+	public int addEssentia(Aspect paramAspect, int paramInt, ForgeDirection dir) {
 		return 0;
 	}
 

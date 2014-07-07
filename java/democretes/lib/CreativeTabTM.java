@@ -1,11 +1,11 @@
 package democretes.lib;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import democretes.items.TMItems;
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.EnumEnchantmentType;
 
 public class CreativeTabTM extends CreativeTabs {
 
@@ -17,13 +17,12 @@ public class CreativeTabTM extends CreativeTabs {
     public String getTabLabel() {
         return "Technomancy";
     }
-    
-    @SideOnly(Side.CLIENT)
-    public int getTabIconItemIndex()
-    {
-      if(TMItems.itemMaterial!=null){
-    	  return TMItems.itemMaterial.itemID;
-      }
-      return Block.stone.blockID;
-    }
+
+	@Override
+	public Item getTabIconItem() {
+		if(TMItems.itemMaterial!=null){
+	    	  return TMItems.itemMaterial;
+	      }
+	      return Item.getItemFromBlock(Blocks.stone);
+	}
 }

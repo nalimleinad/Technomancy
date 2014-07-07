@@ -12,7 +12,7 @@ public class CoFH {
 	
 	public static void client() {
 		try{
-			for(Method method : Class.forName("cofh.render.IconRegistry").getMethods()){
+			for(Method method : Class.forName("cofh.render.IIconRegistry").getMethods()){
 				if(method.getName().equalsIgnoreCase("getIcon") && method.getParameterTypes().length==1){getIcon = method;
 				}
 			}

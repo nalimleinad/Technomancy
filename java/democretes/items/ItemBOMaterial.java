@@ -2,10 +2,11 @@ package democretes.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import democretes.lib.Names;
@@ -13,23 +14,23 @@ import democretes.lib.Ref;
 
 public class ItemBOMaterial extends ItemBase {
 
-	public ItemBOMaterial(int id) {
-		super(id);
+	public ItemBOMaterial() {
+		
 		setMaxStackSize(64);
 		setHasSubtypes(true);
 	}
 
 	
-	public Icon[] itemIcon = new Icon[2];
+	public IIcon[] itemIcon = new IIcon[2];
 	
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister icon) {
-		itemIcon[0] = icon.registerIcon(Ref.TEXTURE_PREFIX + "manaCoil");
-		itemIcon[1] = icon.registerIcon(Ref.TEXTURE_PREFIX + "manaGear");
+	@Override
+	public void registerIcons(IIconRegister IIcon) {
+		itemIcon[0] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "manaCoil");
+		itemIcon[1] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "manaGear");
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par) {
+	public IIcon getIconFromDamage(int par) {
 		return this.itemIcon[par];
 	}
 	
@@ -38,7 +39,7 @@ public class ItemBOMaterial extends ItemBase {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs tab, List list) {
+	public void getSubItems(Item id, CreativeTabs tab, List list) {
 		for (int i = 0; i < itemIcon.length; i++) {
 			ItemStack stack  = new ItemStack(id, 1, i);
 			list.add(stack);

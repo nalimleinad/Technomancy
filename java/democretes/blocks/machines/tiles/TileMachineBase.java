@@ -1,12 +1,11 @@
 package democretes.blocks.machines.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import democretes.blocks.TileTechnomancy;
-import democretes.handlers.ConfigHandler;
 
 public class TileMachineBase extends TileTechnomancy implements IEnergyHandler, IEnergyStorage {
 	
@@ -52,7 +51,7 @@ public class TileMachineBase extends TileTechnomancy implements IEnergyHandler, 
 	}
 
 	@Override
-	public boolean canInterface(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from) {
 		return true;
 	}
 

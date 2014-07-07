@@ -14,11 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaTransport;
@@ -124,7 +124,7 @@ public class Thaumcraft {
 
 	public static int enchantFrugal;
 
-	public static Icon iconLiquid;
+	public static IIcon IIconLiquid;
 
 
 
@@ -283,7 +283,7 @@ public class Thaumcraft {
 			Class Conf = Class.forName("thaumcraft.common.config.Config");
 			crooked = (boolean)Conf.getField("crooked").getBoolean(Conf);
 			Class BlockJar = Class.forName("thaumcraft.common.blocks.BlockJar");
-			iconLiquid = (Icon)BlockJar.getField("iconLiquid").get(Block.blocksList[(int) Conf.getField("blockJarId").getInt(Conf)]);
+			IIconLiquid = (IIcon)BlockJar.getField("IIconLiquid").get(blockJar);
 
 			Class JR = Class.forName("thaumcraft.client.renderers.tile.TileJarRenderer");
 			for(Method method : JR.getMethods()){
@@ -310,7 +310,7 @@ public class Thaumcraft {
 	public static void dropItems(World world, int x, int y, int z) {
 		Random rand = new Random();
 		int md = world.getBlockMetadata(x, y, z);
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		if (!(tileEntity instanceof IInventory)) {
 			return;
 		}
@@ -340,9 +340,9 @@ public class Thaumcraft {
 			}
 		}
 	}
-
+	
 	public static TileEntity getConnectableTile(World world, int x, int y, int z, ForgeDirection face){
-		TileEntity te = world.getBlockTileEntity(x + face.offsetX, y + face.offsetY, z + face.offsetZ);
+		TileEntity te = world.getTileEntity(x + face.offsetX, y + face.offsetY, z + face.offsetZ);
 		if (((te instanceof IEssentiaTransport)) && (((IEssentiaTransport)te).isConnectable(face.getOpposite()))) {
 			return te;
 		}

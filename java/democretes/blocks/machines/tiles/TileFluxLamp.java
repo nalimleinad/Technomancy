@@ -2,7 +2,7 @@ package democretes.blocks.machines.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -13,9 +13,9 @@ import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
-import cofh.util.FluidHelper;
 import democretes.blocks.TileTechnomancy;
 import democretes.compat.Thaumcraft;
+import democretes.util.WorldHelper;
 
 public class TileFluxLamp extends TileTechnomancy implements IAspectContainer, IEssentiaTransport, IFluidHandler{
 
@@ -88,7 +88,7 @@ public class TileFluxLamp extends TileTechnomancy implements IAspectContainer, I
 			for(int xx = -10; xx < 10; xx++) {
 				for(int zz = -10; zz < 10; zz++) {
 					if(xx != 0 && zz != 0 && yy != 0) {
-						TileEntity te = this.worldObj.getBlockTileEntity(this.xCoord + xx, this.yCoord + yy, this.zCoord + zz);
+						TileEntity te = this.worldObj.getTileEntity(this.xCoord + xx, this.yCoord + yy, this.zCoord + zz);
 						if(Thaumcraft.TileInfusionMatrix.isInstance(te)) {
 							return te;
 						}
@@ -114,7 +114,7 @@ public class TileFluxLamp extends TileTechnomancy implements IAspectContainer, I
 				ta = ic.getEssentiaType(ForgeDirection.DOWN);
 			}
 			if ((ta != null) && (ic.getSuctionAmount(ForgeDirection.DOWN) < getSuctionAmount(ForgeDirection.UP))) {
-				addToContainer(ta, ic.takeVis(ta, 1));
+				addToContainer(ta, ic.takeEssentia(ta, 1, ForgeDirection.DOWN));
 			}
 		}
 	}
@@ -181,7 +181,7 @@ public class TileFluxLamp extends TileTechnomancy implements IAspectContainer, I
 	}
 
 	@Override
-	public int takeVis(Aspect aspect, int amount) {
+	public int takeEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		return takeFromContainer(aspect, amount) ? amount : 0;
 	}
 
@@ -245,7 +245,7 @@ public class TileFluxLamp extends TileTechnomancy implements IAspectContainer, I
 	}
 
 	@Override
-	public int addVis(Aspect aspect, int amount) {
+	public int addEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		return amount - addToContainer(aspect, amount);
 	}
 
@@ -285,7 +285,7 @@ public class TileFluxLamp extends TileTechnomancy implements IAspectContainer, I
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
 		FluidStack stack = FluidRegistry.getFluidStack(fluid.getName(), 200);
-		int f = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, from.ordinal(), stack, false);
+		int f = WorldHelper.insertFluidIntoAdjacentFluidHandler(this, from, stack, false);
 		if(f == 200) {
 			return true;
 		}

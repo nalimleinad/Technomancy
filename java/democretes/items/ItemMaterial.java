@@ -2,16 +2,16 @@ package democretes.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import thaumcraft.api.aspects.IAspectSource;
 import cpw.mods.fml.relauncher.Side;
@@ -23,26 +23,26 @@ import democretes.lib.Ref;
 
 public class ItemMaterial extends ItemBase {
 
-	public ItemMaterial(int id) {
-		super(id);
+	public ItemMaterial() {
+		
 		setMaxStackSize(64);
 		setHasSubtypes(true);
 	}
 
 
-	public Icon[] itemIcon = new Icon[5];
+	public IIcon[] itemIcon = new IIcon[5];
 
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister icon) {
-		itemIcon[0] = icon.registerIcon(Ref.TEXTURE_PREFIX + "neutronizedMetal");
-		itemIcon[1] = icon.registerIcon(Ref.TEXTURE_PREFIX + "enchantedCoil");
-		itemIcon[2] = icon.registerIcon(Ref.TEXTURE_PREFIX + "neutronizedGear");
-		itemIcon[3] = icon.registerIcon(Ref.TEXTURE_PREFIX + "penCore");
-		itemIcon[4] = icon.registerIcon(Ref.TEXTURE_PREFIX + "coilCoupler");
+	@Override
+	public void registerIcons(IIconRegister IIcon) {
+		itemIcon[0] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "neutronizedMetal");
+		itemIcon[1] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "enchantedCoil");
+		itemIcon[2] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "neutronizedGear");
+		itemIcon[3] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "penCore");
+		itemIcon[4] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "coilCoupler");
 	}
 
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par) {
+	public IIcon getIconFromDamage(int par) {
 		return this.itemIcon[par];
 	}
 
@@ -50,9 +50,8 @@ public class ItemMaterial extends ItemBase {
 	public String getUnlocalizedName(ItemStack stack) {
 		return Ref.MOD_PREFIX + Names.itemMaterial + "." + stack.getItemDamage();
 	}
-
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs tab, List list) {
+	
+	public void getSubItems(Item id, CreativeTabs tab, List list) {
 		for (int i = 0; i < itemIcon.length; i++) {
 			ItemStack stack  = new ItemStack(id, 1, i);
 			list.add(stack);
@@ -71,41 +70,41 @@ public class ItemMaterial extends ItemBase {
 		}
 
 		if(!world.isRemote) {
-			TileEntity tile = world.getBlockTileEntity(x, y, z);
+			TileEntity tile = world.getTileEntity(x, y, z);
 			if(tile != null && stack.getItemDamage() == 4) {			
 				if(tile instanceof IAspectSource && !Thaumcraft.TileMirrorEssentia.isInstance(tile) && !(tile instanceof TileTeslaCoil)) {
 					if(stack.stackTagCompound.getBoolean("ent")) {
 						if(tile.getWorldObj().provider.dimensionId == stack.stackTagCompound.getInteger("dimId")){
 							if(!areCoordsEqual(stack.stackTagCompound, x, y, z)) {
 								int[] i = retrievePos(stack.stackTagCompound);
-								((TileTeslaCoil)world.getBlockTileEntity(i[0], i[1], i[2])).sources.add(new ChunkCoordinates(x, y, z));
-								player.sendChatToPlayer(ChatMessageComponent.createFromText("Linked"));
+								((TileTeslaCoil)world.getTileEntity(i[0], i[1], i[2])).sources.add(new ChunkCoordinates(x, y, z));
+								player.addChatComponentMessage(new ChatComponentText("Linked"));
 								stack.stackTagCompound.setBoolean("ent", false);
 								return true;
 							}
 						}else{
-							player.sendChatToPlayer(ChatMessageComponent.createFromText("Cannot create an interdimensional link"));
+							player.addChatComponentMessage(new ChatComponentText("Cannot create an interdimensional link"));
 						}
 					}else{
-						player.sendChatToPlayer(ChatMessageComponent.createFromText("No valid wireless destination available"));
+						player.addChatComponentMessage(new ChatComponentText("No valid wireless destination available"));
 					}
 				}else if(tile instanceof TileTeslaCoil && (!stack.stackTagCompound.getBoolean("ent") || player.isSneaking())) {
 					if(player.isSneaking()) {
 						((TileTeslaCoil)tile).sources.clear();
-						player.sendChatToPlayer(ChatMessageComponent.createFromText("Links Cleared"));
+						player.addChatComponentMessage(new ChatComponentText("Links Cleared"));
 						return false;
 					}else{
-						player.sendChatToPlayer(ChatMessageComponent.createFromText("Begin Linking"));					
+						player.addChatComponentMessage(new ChatComponentText("Begin Linking"));					
 						stack.stackTagCompound.setBoolean("ent", true);
 						stack.stackTagCompound.setInteger("x", x);
 						stack.stackTagCompound.setInteger("y", y);
 						stack.stackTagCompound.setInteger("z", z);
-						stack.stackTagCompound.setInteger("dimId", tile.worldObj.provider.dimensionId);
+						stack.stackTagCompound.setInteger("dimId", tile.getWorldObj().provider.dimensionId);
 						return true;
 					}
 
 				}else{
-					player.sendChatToPlayer(ChatMessageComponent.createFromText("Not a valid source"));
+					player.addChatComponentMessage(new ChatComponentText("Not a valid source"));
 				}
 			}
 		}

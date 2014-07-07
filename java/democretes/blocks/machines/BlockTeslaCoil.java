@@ -1,15 +1,14 @@
 package democretes.blocks.machines;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.IEssentiaContainerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -22,20 +21,19 @@ import democretes.lib.RenderIds;
 
 public class BlockTeslaCoil extends BlockBase {
 
-	public BlockTeslaCoil(int id) {
-		super(id);
-		setUnlocalizedName(Ref.MOD_PREFIX + Names.teslaCoil);
+	public BlockTeslaCoil() {
+		setBlockName(Ref.MOD_PREFIX + Names.teslaCoil);
 		setBlockBounds(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileTeslaCoil();
 	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float vecX, float vecY, float vecZ) {
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		ItemStack stack = player.getHeldItem();
 		if(tile != null && stack == null && player.isSneaking()) {
 			if(tile instanceof TileTeslaCoil) {
@@ -74,7 +72,7 @@ public class BlockTeslaCoil extends BlockBase {
 	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile instanceof TileTeslaCoil) {
 			((TileTeslaCoil)tile).facing = this.facing;
 		}
@@ -88,7 +86,7 @@ public class BlockTeslaCoil extends BlockBase {
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile instanceof TileTeslaCoil) {
 			switch(((TileTeslaCoil)tile).facing) {
 			case 0:
@@ -123,11 +121,8 @@ public class BlockTeslaCoil extends BlockBase {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public Icon iconCoil;
-	
-	@SideOnly(Side.CLIENT)
-	public void RegisterIcons(IconRegister icon) {
-		this.iconCoil = icon.registerIcon(Ref.TEXTURE_PREFIX + Names.condenserBlock);
+	public void registerBlockIcons(IIconRegister IIcon) {
+		blockIcon = IIcon.registerIcon(Ref.TEXTURE_PREFIX + Names.condenserBlock);
 	}
 
 }

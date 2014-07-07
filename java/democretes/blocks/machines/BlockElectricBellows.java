@@ -1,12 +1,11 @@
 package democretes.blocks.machines;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import democretes.blocks.BlockBase;
@@ -18,16 +17,15 @@ import democretes.lib.RenderIds;
 
 public class BlockElectricBellows extends BlockBase{
 
-	public BlockElectricBellows(int id) {
-		super(id);
-		setUnlocalizedName(Ref.MOD_PREFIX + Names.electricBellows);
+	public BlockElectricBellows() {
+		setBlockName(Ref.MOD_PREFIX + Names.electricBellows);
 	}
 	
 	private byte facing;
 	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile instanceof TileElectricBellows) {
 			((TileElectricBellows)tile).facing = this.facing;
 		}
@@ -53,15 +51,15 @@ public class BlockElectricBellows extends BlockBase{
 		case 5:
 			offsetX += 1;
 		}
-		if(Thaumcraft.TileAlchemyFurnace.isInstance(world.getBlockTileEntity(x + offsetX, y, z + offsetZ)) ||
-				Thaumcraft.TileArcaneFurnace.isInstance(world.getBlockTileEntity(x + (offsetX*2), y, z + (offsetZ*2)))) {
+		if(Thaumcraft.TileAlchemyFurnace.isInstance(world.getTileEntity(x + offsetX, y, z + offsetZ)) ||
+				Thaumcraft.TileArcaneFurnace.isInstance(world.getTileEntity(x + (offsetX*2), y, z + (offsetZ*2)))) {
 			return true;
 		}
 		return false;
 	}	
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileElectricBellows();
 	}
 	
@@ -81,11 +79,8 @@ public class BlockElectricBellows extends BlockBase{
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public Icon iconBellows;
-	
-	@SideOnly(Side.CLIENT)
-	public void RegisterIcons(IconRegister icon) {
-		this.iconBellows = icon.registerIcon(Ref.TEXTURE_PREFIX + Names.condenserBlock);
+	public void registerBlockIcons(IIconRegister IIcon) {
+		blockIcon = IIcon.registerIcon(Ref.TEXTURE_PREFIX + Names.condenserBlock);
 	}
 
 }

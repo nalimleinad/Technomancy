@@ -16,7 +16,7 @@ public class TileTeslaCoilRenderer extends TileEntitySpecialRenderer {
 	
 	ModelTeslaCoil model = new ModelTeslaCoil();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_TESLA_COIL_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_TESLA_COIL_TEXTURE);
 
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float f) {
 		

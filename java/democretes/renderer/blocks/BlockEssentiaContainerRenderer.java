@@ -2,7 +2,7 @@ package democretes.renderer.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
@@ -17,7 +17,7 @@ public class BlockEssentiaContainerRenderer implements ISimpleBlockRenderingHand
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		TileEntityRenderer.instance.renderTileEntityAt(new TileEssentiaContainer(), 0.0D, 0.0D, 0.0D, 0.0F);
+		TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileEssentiaContainer(), 0, 0, 0, 0);
 		GL11.glPopMatrix();
 	}
 
@@ -27,7 +27,7 @@ public class BlockEssentiaContainerRenderer implements ISimpleBlockRenderingHand
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory(int mId) {
 		return true;
 	}
 

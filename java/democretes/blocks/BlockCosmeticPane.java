@@ -3,14 +3,13 @@ package democretes.blocks;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import democretes.lib.Ids;
@@ -19,22 +18,15 @@ import democretes.lib.Ref;
 
 public class BlockCosmeticPane extends BlockBase {
 		
-	public BlockCosmeticPane(int id) {
-		super(id);
-		this.setUnlocalizedName(Ref.MOD_PREFIX + Names.cosmeticPane);		
+	public BlockCosmeticPane() {
+		
+		this.setBlockName(Ref.MOD_PREFIX + Names.cosmeticPane);		
 	}
-	
-	
-	@SideOnly(Side.CLIENT)
-	private Icon glassIcon;
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void registerIcons(IconRegister icon) {
-		glassIcon = icon.registerIcon(Ref.TEXTURE_PREFIX + Names.cosmeticOpaque);
-	}
-	public Icon getIcon(int side, int meta) {
-		return glassIcon;
+	public void registerBlockIcons(IIconRegister IIcon) {
+		blockIcon = IIcon.registerIcon(Ref.TEXTURE_PREFIX + Names.cosmeticOpaque);
 	}
 
 	public boolean isOpaqueCube() {
@@ -53,14 +45,14 @@ public class BlockCosmeticPane extends BlockBase {
 	public int getRenderType() {
 		return 1;
 	}
-    
-    public boolean shouldSideBeRendered(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)    {
-        int i1 = par1IBlockAccess.getBlockId(par2, par3, par4);
-        return i1 == this.blockID ? false : super.shouldSideBeRendered(par1IBlockAccess, par2, par3, par4, par5);
+	
+	public boolean shouldSideBeRendered(IBlockAccess access, int x, int y, int z, int side)    {
+        Block i1 = access.getBlock(x, y, z);
+        return i1.isEqualTo(i1, this) ? false : super.shouldSideBeRendered(access, x, y, z, side);
     }
     
-    public final boolean canThisPaneConnectToThisBlockID(int par1)    {
-        return Block.opaqueCubeLookup[par1] || par1 == Ids.idCOSMETIC_PANE || par1 == Ids.cosmeticOpaque;
+    public final boolean canThisPaneConnectToThisBlockID(Block block){
+        return block.isOpaqueCube() || block instanceof BlockCosmeticPane || block instanceof BlockCosmeticOpaque;
     }
     
     public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)    {
@@ -129,13 +121,14 @@ public class BlockCosmeticPane extends BlockBase {
     }
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return null;
 	}
 	
 	public boolean canPaneConnectTo(IBlockAccess access, int x, int y, int z, ForgeDirection dir)
     {
-        return canThisPaneConnectToThisBlockID(access.getBlockId(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ)) || access.isBlockSolidOnSide(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ, dir.getOpposite(), false);
+        return canThisPaneConnectToThisBlockID(access.getBlock(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ)) ||
+        		access.getBlock(x, y, z).isSideSolid(access, x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ, dir.getOpposite());
     }
 
 }

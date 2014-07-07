@@ -10,7 +10,7 @@ public class Ref {
     public static final String CHANNEL_NAME = MOD_NAME;
     
     //Locations
-    public static final String MODEL_PREFIX = MOD_ID + ":textures/models/";
+    public static final String MODEL_PREFIX = "textures/models/";
     public static final String TEXTURE_PREFIX = MOD_ID + ":";
     
     //Model Names

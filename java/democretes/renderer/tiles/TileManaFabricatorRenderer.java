@@ -14,7 +14,7 @@ public class TileManaFabricatorRenderer extends TileEntitySpecialRenderer{
 	
 	ModelManaFabricator model = new ModelManaFabricator ();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_MANA_FABRICATOR_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_MANA_FABRICATOR_TEXTURE);
 
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float f) {
 		GL11.glPushMatrix();

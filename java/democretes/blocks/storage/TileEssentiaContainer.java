@@ -1,6 +1,6 @@
 package democretes.blocks.storage;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.IAspectSource;
 import thaumcraft.api.aspects.IEssentiaTransport;
 import democretes.compat.thaumcraft.TileJarFillable;

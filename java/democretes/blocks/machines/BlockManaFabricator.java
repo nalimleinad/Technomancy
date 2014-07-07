@@ -2,15 +2,14 @@ package democretes.blocks.machines;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import vazkii.botania.api.IWandHUD;
+import net.minecraftforge.common.util.ForgeDirection;
+import vazkii.botania.api.wand.IWandHUD;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import democretes.blocks.BlockBase;
@@ -21,20 +20,19 @@ import democretes.lib.RenderIds;
 
 public class BlockManaFabricator extends BlockBase implements IWandHUD {
 
-	public BlockManaFabricator(int id) {
-		super(id);
-		setUnlocalizedName(Ref.MOD_PREFIX + Names.manaFabricator);
+	public BlockManaFabricator() {
+		setBlockName(Ref.MOD_PREFIX + Names.manaFabricator);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileManaFabricator();
 	}
 	
 	private int facing;	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack){
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile instanceof TileManaFabricator) {
 			((TileManaFabricator)tile).facing = this.facing;
 		}
@@ -48,7 +46,7 @@ public class BlockManaFabricator extends BlockBase implements IWandHUD {
 	
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile instanceof TileManaFabricator) {
 			switch(((TileManaFabricator)tile).facing) {
 			case 0:
@@ -83,16 +81,13 @@ public class BlockManaFabricator extends BlockBase implements IWandHUD {
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public Icon iconMana;
-	
-	@SideOnly(Side.CLIENT)
-	public void RegisterIcons(IconRegister icon) {
-		this.iconMana = icon.registerIcon(Ref.TEXTURE_PREFIX + Names.condenserBlock);
+	public void registerBlockIcons(IIconRegister IIcon) {
+		blockIcon = IIcon.registerIcon(Ref.TEXTURE_PREFIX + Names.condenserBlock);
 	}
 	
 	@Override
 	public void renderHUD(Minecraft mc, ScaledResolution res, World world, int x, int y, int z) {
-		((TileManaFabricator)world.getBlockTileEntity(x, y, z)).renderHUD(mc, res);
+		((TileManaFabricator)world.getTileEntity(x, y, z)).renderHUD(mc, res);
 	}
 
 }

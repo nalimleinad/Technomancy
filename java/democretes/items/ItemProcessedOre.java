@@ -2,17 +2,20 @@ package democretes.items;
 
 import java.util.List;
 
-import cofh.util.StringHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
+
+import org.lwjgl.input.Keyboard;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import democretes.lib.Names;
 import democretes.lib.Ref;
 
@@ -21,25 +24,25 @@ public class ItemProcessedOre extends ItemBase {
 	String[] processors = {"Thaumcraft", "Botania", "Blood Magic", "Ars Magica", "Witchery", "Totemic" };
 	String name;
 	
-	public ItemProcessedOre(int id) {
-		super(id);
+	public ItemProcessedOre() {
+		
 		setMaxStackSize(64);
 		setHasSubtypes(true);
 	}
 
-	public Icon[] itemIcon = new Icon[5];
+	public IIcon[] itemIcon = new IIcon[5];
 
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister icon) {
-		itemIcon[0] = icon.registerIcon(Ref.TEXTURE_PREFIX + "ore0");
-		itemIcon[1] = icon.registerIcon(Ref.TEXTURE_PREFIX + "ore1");
-		itemIcon[2] = icon.registerIcon(Ref.TEXTURE_PREFIX + "ore2");
-		itemIcon[3] = icon.registerIcon(Ref.TEXTURE_PREFIX + "ore3");
-		itemIcon[4] = icon.registerIcon(Ref.TEXTURE_PREFIX + "ore4");
+	@Override
+	public void registerIcons(IIconRegister IIcon) {
+		itemIcon[0] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "ore0");
+		itemIcon[1] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "ore1");
+		itemIcon[2] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "ore2");
+		itemIcon[3] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "ore3");
+		itemIcon[4] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "ore4");
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs tab, List list) {
+	public void getSubItems(Item id, CreativeTabs tab, List list) {
 		for (int i = 0; i < itemIcon.length; i++) {
 			ItemStack stack  = new ItemStack(id, 1, i);
 			list.add(stack);
@@ -48,7 +51,7 @@ public class ItemProcessedOre extends ItemBase {
 
 	@Override	
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par) {
+	public IIcon getIconFromDamage(int par) {
 		return itemIcon[par];
 	}
 
@@ -59,14 +62,17 @@ public class ItemProcessedOre extends ItemBase {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-		if(!StringHelper.isShiftKeyDown()) {
-			list.add(StatCollector.translateToLocal("info.techno:purity") + ": " + (stack.getItemDamage() + 1));
-			list.add(StringHelper.getFlavorText("info.techno:shift"));
+		if(!(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+			list.add(EnumChatFormatting.BLUE.toString() + EnumChatFormatting.ITALIC + 
+					StatCollector.translateToLocal("info.techno:purity") + ": " + (stack.getItemDamage() + 1));
+			list.add(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.ITALIC + StatCollector.translateToLocal("info.techno:shift"));
 		}else{
-			list.add(StringHelper.localize(this.getUnlocalizedName()));
+			list.add(StatCollector.translateToLocal(this.getUnlocalizedName()));
 			list.remove("item.null");
-			list.add(StringHelper.getActivationText("info.techno:purity") + ": " + (stack.getItemDamage() + 1));
-			list.add(StringHelper.getInfoText("info.techno:process") + ":");
+			list.add(EnumChatFormatting.BLUE.toString() + EnumChatFormatting.ITALIC +
+					StatCollector.translateToLocal("info.techno:purity") + ": " + (stack.getItemDamage() + 1));
+			list.add(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.ITALIC + 
+					StatCollector.translateToLocal("info.techno:process") + ":");
 			for(int i = 0; i < processors.length; i++) {
 				if(stack.stackTagCompound != null) {
 					if(stack.stackTagCompound.getBoolean(processors[i])) {
@@ -79,8 +85,8 @@ public class ItemProcessedOre extends ItemBase {
 
 	public static class ItemProcessedIron extends ItemProcessedOre {	
 		
-		public ItemProcessedIron(int id) {
-			super(id);
+		public ItemProcessedIron() {
+			
 			setMaxStackSize(64);
 			setHasSubtypes(true);
 			this.name = Names.pureIron;
@@ -95,8 +101,8 @@ public class ItemProcessedOre extends ItemBase {
 	
 	public static class ItemProcessedGold extends ItemProcessedOre {	
 
-		public ItemProcessedGold(int id) {
-			super(id);
+		public ItemProcessedGold() {
+			
 			setMaxStackSize(64);
 			setHasSubtypes(true);
 			this.name = Names.pureGold;
@@ -112,8 +118,8 @@ public class ItemProcessedOre extends ItemBase {
 	
 	public static class ItemProcessedCopper extends ItemProcessedOre {	
 
-		public ItemProcessedCopper(int id) {
-			super(id);
+		public ItemProcessedCopper() {
+			
 			setMaxStackSize(64);
 			setHasSubtypes(true);
 			this.name = Names.pureCopper;
@@ -128,8 +134,8 @@ public class ItemProcessedOre extends ItemBase {
 	
 	public static class ItemProcessedTin extends ItemProcessedOre {	
 
-		public ItemProcessedTin(int id) {
-			super(id);
+		public ItemProcessedTin() {
+			
 			setMaxStackSize(64);
 			setHasSubtypes(true);
 			this.name = Names.pureTin;
@@ -144,8 +150,8 @@ public class ItemProcessedOre extends ItemBase {
 	
 	public static class ItemProcessedSilver extends ItemProcessedOre {	
 
-		public ItemProcessedSilver(int id) {
-			super(id);
+		public ItemProcessedSilver() {
+			
 			setMaxStackSize(64);
 			setHasSubtypes(true);
 			this.name = Names.pureSilver;
@@ -160,8 +166,8 @@ public class ItemProcessedOre extends ItemBase {
 	
 	public static class ItemProcessedLead extends ItemProcessedOre {
 
-		public ItemProcessedLead(int id) {
-			super(id);
+		public ItemProcessedLead() {
+			
 			setMaxStackSize(64);
 			setHasSubtypes(true);
 			this.name = Names.pureLead;
@@ -176,8 +182,8 @@ public class ItemProcessedOre extends ItemBase {
 	
 	public static class ItemProcessedNickel extends ItemProcessedOre {	
 
-		public ItemProcessedNickel(int id) {
-			super(id);
+		public ItemProcessedNickel() {
+			
 			setMaxStackSize(64);
 			setHasSubtypes(true);
 			this.name = Names.pureNickel;

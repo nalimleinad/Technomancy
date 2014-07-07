@@ -2,7 +2,7 @@ package democretes.renderer.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
@@ -19,7 +19,7 @@ public class BlockNodeGeneratorRenderer implements ISimpleBlockRenderingHandler{
 		GL11.glTranslatef(-0.2F, -1.0F, -0.4F);
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
 		GL11.glRotatef(-90, 0F, 1F, 0F);
-		TileEntityRenderer.instance.renderTileEntityAt(new TileNodeGenerator(), 0.0D, 0.0D, 0.0D, 0.0F);
+		TileEntityRendererDispatcher.instance.renderTileEntityAt(new TileNodeGenerator(), 0, 0, 0, 0);
 		GL11.glPopMatrix();
 	}
 
@@ -29,7 +29,7 @@ public class BlockNodeGeneratorRenderer implements ISimpleBlockRenderingHandler{
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory(int mId) {
 		return true;
 	}
 

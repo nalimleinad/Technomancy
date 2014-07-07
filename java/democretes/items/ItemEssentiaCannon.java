@@ -18,8 +18,7 @@ public class ItemEssentiaCannon extends ItemBase {
 	
     
 
-	public ItemEssentiaCannon(int id) {
-		super(id);
+	public ItemEssentiaCannon() {
 		setUnlocalizedName(Ref.MOD_PREFIX + Names.essentiaCannon);
 	}	
 	

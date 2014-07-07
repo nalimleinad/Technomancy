@@ -1,7 +1,7 @@
 package democretes.blocks.dynamos.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -91,6 +91,4 @@ public class TileBloodDynamo extends TileDynamoBase implements IFluidHandler {
 		compound.setByte("Facing", facing);
 		tank.writeToNBT(compound);
 	}
-	
-
 }

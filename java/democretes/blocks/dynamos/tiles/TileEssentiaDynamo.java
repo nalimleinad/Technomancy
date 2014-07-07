@@ -4,9 +4,8 @@ import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -84,7 +83,7 @@ public class TileEssentiaDynamo extends TileDynamoBase implements IAspectContain
 				aspect == Aspect.MINE || aspect == Aspect.CRAFT || aspect == Aspect.TRAVEL) {
 			return 16000;
 		}
-		if(aspect == Aspect.STONE || aspect == Aspect.CRYSTAL || aspect == Aspect.EARTH || aspect == Aspect.ENTROPY){
+		if(/*aspect == Aspect.STONE ||*/ aspect == Aspect.CRYSTAL || aspect == Aspect.EARTH || aspect == Aspect.ENTROPY){
 			if(this.yCoord < 8) {
 				return 2000;
 			}
@@ -95,7 +94,7 @@ public class TileEssentiaDynamo extends TileDynamoBase implements IAspectContain
 				aspect == Aspect.SOUL || aspect == Aspect.WEAPON || aspect == Aspect.WEATHER || aspect == Aspect.UNDEAD) {
 			return 12000;
 		}
-		if( aspect == Aspect.TREE || aspect == Aspect.SEED || aspect == Aspect.PLANT || aspect == Aspect.CROP || aspect == Aspect.CLOTH || aspect == Aspect.VOID || aspect == Aspect.FLESH) { 
+		if( aspect == Aspect.TREE || /*aspect == Aspect.SEED ||*/ aspect == Aspect.PLANT || aspect == Aspect.CROP || aspect == Aspect.CLOTH || aspect == Aspect.VOID || aspect == Aspect.FLESH) { 
 			return 8000;
 		}
 		if(aspect == Aspect.UNDEAD) {
@@ -112,9 +111,9 @@ public class TileEssentiaDynamo extends TileDynamoBase implements IAspectContain
 			}
 			return 12000;
 		}
-		if(aspect == Aspect.ICE) {
+		/*if(aspect == Aspect.ICE) {
 			return 8000;
-		}
+		}*/
 		if(aspect == Aspect.SLIME) {
 			return 16000;
 		}
@@ -180,7 +179,7 @@ public class TileEssentiaDynamo extends TileDynamoBase implements IAspectContain
 			return 0;
 		}
 		BiomeGenBase bg = worldObj.getBiomeGenForCoords(xCoord, yCoord);
-		if(aspect == Aspect.ICE &&  (bg == BiomeGenBase.frozenRiver || bg == BiomeGenBase.frozenOcean || bg == BiomeGenBase.iceMountains
+		/*if(aspect == Aspect.ICE &&  (bg == BiomeGenBase.frozenRiver || bg == BiomeGenBase.frozenOcean || bg == BiomeGenBase.iceMountains
 				|| bg == BiomeGenBase.icePlains || bg == BiomeGenBase.taiga || bg == BiomeGenBase.taigaHills)) {
 			if(firstRemoval) {
 				firstRemoval = false;
@@ -188,7 +187,7 @@ public class TileEssentiaDynamo extends TileDynamoBase implements IAspectContain
 			}else{
 				firstRemoval = true;
 			}
-		}
+		}*/
 		if(aspect == Aspect.WATER && (bg == BiomeGenBase.ocean || bg == BiomeGenBase.river)) {
 			if(firstRemoval) {
 				firstRemoval = false;
@@ -229,7 +228,7 @@ public class TileEssentiaDynamo extends TileDynamoBase implements IAspectContain
 						Aspect ta = ic.getEssentiaType(dir.getOpposite());
 						if ((ic.getEssentiaAmount(dir.getOpposite()) > 0) && (ic.getSuctionAmount(dir.getOpposite()) < getSuctionAmount(null))
 								&& (getSuctionAmount(null) >= ic.getMinimumSuction())) {
-							addToContainer(ta, ic.takeVis(ta, 1));
+							addToContainer(ta, ic.takeEssentia(ta, 1, dir.getOpposite()));
 							return;
 						}
 					}
@@ -287,7 +286,7 @@ public class TileEssentiaDynamo extends TileDynamoBase implements IAspectContain
 	}	
 
 	@Override
-	public int takeVis(Aspect aspect, int amount) {
+	public int takeEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		return takeFromContainer(aspect, amount) ? amount : 0;
 	}
 
@@ -347,7 +346,7 @@ public class TileEssentiaDynamo extends TileDynamoBase implements IAspectContain
 	}
 
 	@Override
-	public int addVis(Aspect aspect, int amount) {
+	public int addEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		return amount - addToContainer(aspect, amount);
 	}
 

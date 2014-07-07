@@ -1,9 +1,9 @@
 package democretes.blocks;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileTechnomancy extends TileEntity {
@@ -28,12 +28,12 @@ public class TileTechnomancy extends TileEntity {
 	  public Packet getDescriptionPacket() {
 	    NBTTagCompound nbttagcompound = new NBTTagCompound();
 	    writeCustomNBT(nbttagcompound);
-	    return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, -999, nbttagcompound);
+	    return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, -999, nbttagcompound);
 	  }
 	  
-	  public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
-	    super.onDataPacket(net, pkt);
-	    readCustomNBT(pkt.data);
+	  public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		  if(pkt!=null && pkt.func_148857_g()!=null)
+			  readCustomNBT(pkt.func_148857_g());
 	  }
 	  
 	  public void onNeighborBlockChange() {}

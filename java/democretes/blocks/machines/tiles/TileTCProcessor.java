@@ -2,7 +2,7 @@ package democretes.blocks.machines.tiles;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -51,7 +51,7 @@ public class TileTCProcessor extends TileProcessorBase implements IAspectContain
 						ic = (IEssentiaTransport)te;
 						Aspect ta = ic.getEssentiaType(dir.getOpposite());
 						if ((ic.getEssentiaAmount(dir.getOpposite()) > 0) && (ic.getSuctionAmount(dir.getOpposite()) < getSuctionAmount(null)) && (getSuctionAmount(null) >= ic.getMinimumSuction())) {
-							addToContainer(ta, ic.takeVis(ta, 1));
+							addToContainer(ta, ic.takeEssentia(ta, 1, dir.getOpposite()));
 							return;
 						}
 					}
@@ -149,7 +149,7 @@ public class TileTCProcessor extends TileProcessorBase implements IAspectContain
 	public void setSuction(Aspect aspect, int amount) {	}
 
 	@Override
-	public int takeVis(Aspect aspect, int amount) {
+	public int takeEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		  return takeFromContainer(aspect, amount) ? amount : 0;
 	}
 
@@ -186,7 +186,7 @@ public class TileTCProcessor extends TileProcessorBase implements IAspectContain
 	}
 
 	@Override
-	public int addVis(Aspect aspect, int amount) {
+	public int addEssentia(Aspect aspect, int amount, ForgeDirection dir) {
 		return amount - addToContainer(aspect, amount);
 	}
 

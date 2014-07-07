@@ -2,10 +2,11 @@ package democretes.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import thaumcraft.api.wands.WandCap;
 import thaumcraft.api.wands.WandRod;
 import cpw.mods.fml.relauncher.Side;
@@ -16,21 +17,21 @@ import democretes.lib.Ref;
 
 public class ItemWandCores extends ItemBase{
 
-	public ItemWandCores(int id) {
-		super(id);
+	public ItemWandCores() {
+		
 		this.setHasSubtypes(true);
 	}
 
-	public Icon[] coresIcon = new Icon[1];
+	public IIcon[] coresIIcon = new IIcon[1];
 
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister icon) {
-		coresIcon[0] = icon.registerIcon(Ref.TEXTURE_PREFIX + "electricWandCore");
+	@Override
+	public void registerIcons(IIconRegister IIcon) {
+		coresIIcon[0] = IIcon.registerIcon(Ref.TEXTURE_PREFIX + "electricWandCore");
 	}
 
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int icon) {
-		return this.coresIcon[icon];
+	public IIcon getIconFromDamage(int IIcon) {
+		return this.coresIIcon[IIcon];
 	}
 
 	public String getUnlocalizedName(ItemStack stack) {
@@ -38,9 +39,9 @@ public class ItemWandCores extends ItemBase{
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int id, CreativeTabs tab, List list) {
+	public void getSubItems(Item id, CreativeTabs tab, List list) {
 		try{
-			for (int i = 0; i < coresIcon.length; i++) {
+			for (int i = 0; i < coresIIcon.length; i++) {
 				ItemStack stack  = new ItemStack(id, 1, i);
 				list.add(stack);
 			}

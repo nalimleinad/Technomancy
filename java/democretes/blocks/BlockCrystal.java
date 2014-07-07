@@ -1,27 +1,20 @@
 package democretes.blocks;
 
-import java.util.List;
 import java.util.Random;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import democretes.lib.Names;
 import democretes.lib.Ref;
 
 public class BlockCrystal extends BlockBase {
 
-	public BlockCrystal(int id) {
-		super(id);
+	public BlockCrystal() {
+		
 		setBlockUnbreakable();
-		setUnlocalizedName(Ref.MOD_PREFIX + Names.crystalBlock);
+		setBlockName(Ref.MOD_PREFIX + Names.crystalBlock);
 	}
 	
 	@Override
@@ -38,23 +31,16 @@ public class BlockCrystal extends BlockBase {
 		}
 	}
 	
-	public Icon crystalIcon;	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister icon) {
-		
-	}	
-	
-	@Override
-	public void getSubBlocks(int id, CreativeTabs tab, List list) {
-		list.add(new ItemStack(id, 1, 0));
-		list.add(new ItemStack(id, 1, 1));
-		list.add(new ItemStack(id, 1, 2));
-	}
+//	@Override
+//	public void getSubBlocks(int id, CreativeTabs tab, List list) {
+//		list.add(new ItemStack(id, 1, 0));
+//		list.add(new ItemStack(id, 1, 1));
+//		list.add(new ItemStack(id, 1, 2));
+//	}
 
 
 	@Override
-	public TileEntity createNewTileEntity(World world) {
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return null;
 	}
 

@@ -14,7 +14,7 @@ public class TileNodeGeneratorRenderer extends TileEntitySpecialRenderer {
 	
 	ModelNodeGenerator model = new ModelNodeGenerator();
 	
-	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MODEL_NODE_GENERATOR_TEXTURE);
+	private static final ResourceLocation modelTexture = new ResourceLocation(Ref.MOD_ID.toLowerCase(),Ref.MODEL_NODE_GENERATOR_TEXTURE);
 
 	@Override
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float t) {

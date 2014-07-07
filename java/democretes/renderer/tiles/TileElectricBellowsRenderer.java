@@ -35,7 +35,7 @@ public class TileElectricBellowsRenderer extends TileEntitySpecialRenderer{
 		TileElectricBellows bellows = (TileElectricBellows)entity;
 		
 		float scale = 0.0F;
-		if (bellows.worldObj == null) {
+		if (bellows.getWorldObj() == null) {
 			EntityPlayer p = Minecraft.getMinecraft().thePlayer;
 			scale = MathHelper.sin(p.ticksExisted / 8.0F) * 0.3F + 0.7F;
 			bellows.facing = 2;

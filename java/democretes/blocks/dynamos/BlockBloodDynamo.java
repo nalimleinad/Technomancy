@@ -1,15 +1,15 @@
 package democretes.blocks.dynamos;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import buildcraft.api.tools.IToolWrench;
+import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import democretes.blocks.BlockBase;
@@ -20,54 +20,57 @@ import democretes.lib.RenderIds;
 
 public class BlockBloodDynamo extends BlockBase {
 
-	@SideOnly(Side.CLIENT)
-	public Icon iconDynamo;
-
-	public BlockBloodDynamo(int id) {
-		super(id);
-		setUnlocalizedName("techno:bloodDynamo");
+	public BlockBloodDynamo() {
+		setBlockName("techno:bloodDynamo");
 	}
-	public TileEntity createNewTileEntity(World world) {
+
+	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileBloodDynamo();
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void RegisterIcons(IconRegister icon) {
-		iconDynamo = icon.registerIcon(Block.stone.getItemIconName());
+	public void registerBlockIcons(IIconRegister IIcon) {
+		blockIcon = Blocks.stone.getIcon(0, 0);
 	}
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float vecX, float vecY, float vecZ) {
 		if (!world.isRemote) {
-			if (player.getHeldItem() != null) { 
-				TileEntity entity = world.getBlockTileEntity(x, y, z);
+			if (player.getHeldItem() != null) {
+				TileEntity entity = world.getTileEntity(x, y, z);
 				if (entity instanceof TileBloodDynamo) {
-					if (player.getHeldItem().getItem() instanceof IToolWrench) {
-						((TileBloodDynamo)entity).rotateBlock();
-					}else if(player.getHeldItem().getItem()==BloodMagic.divinationSigil){
-						player.addChatMessage("Energy: " + ((TileBloodDynamo)entity).getEnergyStored(null) + "/" + ((TileBloodDynamo)entity)
-								.getMaxEnergyStored(null));
-						player.addChatMessage("Blood: " + ((TileBloodDynamo)entity).tank.getFluidAmount() + "/" + ((TileBloodDynamo)entity)
-								.tank.getInfo().capacity);
+					/*if (player.getHeldItem().getItem() instanceof IToolWrench) {
+						((TileBloodDynamo) entity).rotateBlock();
+					} else*/ if (player.getHeldItem().getItem() == BloodMagic.divinationSigil) {
+						player.addChatComponentMessage(new ChatComponentText("Energy: "
+								+ ((TileBloodDynamo) entity).getEnergyStored(null)+ "/"+ ((TileBloodDynamo) entity).getMaxEnergyStored(null)));
+						player.addChatComponentMessage(new ChatComponentText("Blood: " + ((TileBloodDynamo) entity).tank.getFluidAmount() + "/"
+								+ ((TileBloodDynamo) entity).tank.getInfo().capacity));
+					}else if(player.getHeldItem().getItem() == BloodMagic.bucketLife){
+						if(((TileBloodDynamo) entity).tank.getCapacity() - ((TileBloodDynamo) entity).tank.getFluidAmount() >= 1000){
+							player.inventory.mainInventory[player.inventory.currentItem] = new ItemStack(Items.bucket, 1
+									);
+							((TileBloodDynamo) entity).tank.fill(new FluidStack(BloodMagic.lifeEssenceFluid, 1000), true);
+						}
 					}
 				}
-			}else{
+			} else {
 				return true;
 			}
 		}
-		return false;	   
+		return false;
 	}
 
-	@Override   
+	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
-		TileDynamoBase tile = (TileDynamoBase)world.getBlockTileEntity(x, y, z);
+		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
 		if (tile != null) {
-			tile.rotateBlock();		   		
+			tile.rotateBlock();
 		}
 		super.onBlockPlacedBy(world, x, y, z, entity, stack);
-	}  
+	}
 
-	public boolean isOpaqueCube(){
+	public boolean isOpaqueCube() {
 		return false;
 	}
 

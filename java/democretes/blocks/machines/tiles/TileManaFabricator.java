@@ -1,11 +1,9 @@
 package democretes.blocks.machines.tiles;
 
-import java.lang.reflect.InvocationTargetException;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import vazkii.botania.api.mana.IManaPool;
 import cofh.api.energy.EnergyStorage;
 import democretes.blocks.TMBlocks;
@@ -78,7 +76,7 @@ public class TileManaFabricator extends TileMachineBase implements IManaPool {
 	}
 	
 	@Override
-	public boolean canInterface(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from) {
 		return from==ForgeDirection.DOWN;
 	}
 

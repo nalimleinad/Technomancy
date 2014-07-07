@@ -1,12 +1,7 @@
 package democretes.blocks.dynamos.tiles;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import cofh.api.energy.EnergyStorage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -78,7 +73,7 @@ public class TileNodeDynamo extends TileDynamoBase implements IAspectContainer{
 		for(int xx = -8; xx <= 8; xx++) {
 			for(int yy = -8; yy <= 8; yy++) {
 				for(int zz = -8; zz <= 8; zz++) {
-					TileEntity te = this.worldObj.getBlockTileEntity(this.xCoord + xx, this.yCoord + yy, this.zCoord + zz);
+					TileEntity te = worldObj.getTileEntity(this.xCoord + xx, this.yCoord + yy, this.zCoord + zz);
 					if(te instanceof INode) {
 							return te;
 					}					
@@ -177,7 +172,5 @@ public class TileNodeDynamo extends TileDynamoBase implements IAspectContainer{
 	public int containerContains(Aspect tag) {
 		return 0;
 	}
-	
-
 
 }

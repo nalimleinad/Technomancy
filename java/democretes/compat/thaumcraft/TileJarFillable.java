@@ -7,14 +7,14 @@
 
 package democretes.compat.thaumcraft;
 
-import democretes.compat.Thaumcraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectSource;
 import thaumcraft.api.aspects.IEssentiaTransport;
+import democretes.compat.Thaumcraft;
 
 
 public class TileJarFillable extends TileJar implements IAspectSource, IEssentiaTransport{
@@ -182,12 +182,12 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
 		return amount;
 	}
 
-	public int takeVis(Aspect aspect, int amount)
+	public int takeEssentia(Aspect aspect, int amount, ForgeDirection dir)
 	{
 		return takeFromContainer(aspect, amount) ? amount : 0;
 	}
 
-	public int addVis(Aspect aspect, int amount)
+	public int addEssentia(Aspect aspect, int amount, ForgeDirection dir)
 	{
 		return amount - addToContainer(aspect, amount);
 	}
@@ -225,7 +225,7 @@ public class TileJarFillable extends TileJar implements IAspectSource, IEssentia
 
 
 			if ((ta != null) && (ic.getSuctionAmount(ForgeDirection.DOWN) < getSuctionAmount(ForgeDirection.UP))) {
-				addToContainer(ta, ic.takeVis(ta, 1));
+				addToContainer(ta, ic.takeEssentia(ta, 1, ForgeDirection.DOWN));
 			}
 		}
 	}
